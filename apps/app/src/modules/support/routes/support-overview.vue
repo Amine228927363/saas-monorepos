@@ -4,6 +4,6 @@ const { t } = useI18n()
 </script>
 <template>
   <private-view :title="t('support')">
-   <div>support</div>
+    <div>support</div>
   </private-view>
 </template>

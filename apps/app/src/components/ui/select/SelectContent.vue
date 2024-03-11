@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { SelectContent, type SelectContentEmits, type SelectContentProps, SelectPortal, SelectViewport, useForwardPropsEmits } from 'radix-vue'
+import {
+  SelectContent,
+  type SelectContentEmits,
+  type SelectContentProps,
+  SelectPortal,
+  SelectViewport,
+  useForwardPropsEmits
+} from 'radix-vue'
 import { cn } from '@/lib/shadcn'
 
 const props = withDefaults(defineProps<SelectContentProps & { class?: string }>(), {
@@ -25,7 +32,13 @@ const forwarded = useForwardPropsEmits(props, emits)
       "
     >
       <SelectViewport
-        :class="cn('p-1', position === 'popper' && 'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]')"
+        :class="
+          cn(
+            'p-1',
+            position === 'popper' &&
+              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
+          )
+        "
       >
         <slot />
       </SelectViewport>

@@ -1,7 +1,7 @@
+import { PrismaClient } from '@saas-monorepo/database';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { PrismaClient } from '@saas-monorepo/database';
 import {
   AuthCheckPayload,
   AuthCheckResult,
@@ -33,12 +33,13 @@ export class AuthenticationService {
         },
       });
     } catch (err) {
-      throw new Error("invalid credentials");
+      throw new Error('invalid credentials');
     }
     const isPasswordValid = await this.validatePassword(payload.password, user.password as string);
 
     if (!isPasswordValid) {
-      throw new Error("invalid credentials");    }
+      throw new Error('invalid credentials');
+    }
     const tokenPayload = {
       id: user.id,
       email: user.email,
@@ -59,10 +60,11 @@ export class AuthenticationService {
         email: true,
         id: true,
         password: true,
+        full_name: true,
       },
     });
     if (user) {
-      throw new Error("user already exist");
+      throw new Error('user already exist');
     }
 
     const hashedPassword = await this.hashPassword(payload.password);
@@ -70,6 +72,7 @@ export class AuthenticationService {
       data: {
         email: payload.email,
         password: hashedPassword,
+        full_name: payload.full_name,
       },
     });
     return user;
@@ -78,7 +81,7 @@ export class AuthenticationService {
   async authCheck(payload: AuthCheckPayload) {
     let user = null;
 
-    console.log(payload)
+    console.log(payload);
     try {
       user = await this.prisma.user.findUniqueOrThrow({
         where: { id: payload.id },
@@ -88,7 +91,7 @@ export class AuthenticationService {
         },
       });
     } catch (err) {
-      throw new Error("Not Found");
+      throw new Error('Not Found');
     }
     return user;
   }

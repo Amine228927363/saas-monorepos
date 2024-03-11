@@ -1,4 +1,10 @@
 import { Prisma, PrismaClient, User } from '@saas-monorepo/database';
+import {
+  GetUserByIdPayload,
+  deleteUserByIdPayload,
+  getAllUsersPayload,
+  updateUserPayload,
+} from 'src/types/users.js';
 
 import { AbstractServiceOptions } from '../types/services.js';
 
@@ -15,6 +21,40 @@ export class UsersService {
         },
       });
     } catch (err: any) {
-      throw err
-  }}
+      throw err;
+    }
+  }
+  async getUser(userId: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new Error('No user found with the provided ID');
+    }
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
+  async getAllUsers() {
+    return await this.prisma.user.findMany();
+  }
+  async deleteUser(userId: string) {
+    const deletedUser = await this.prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+    return deletedUser;
+  }
+  async updateUser(userId: string, payload: updateUserPayload) {
+    const updatedUser = await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: payload,
+    });
+    return updatedUser;
+  }
 }

@@ -10,7 +10,10 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <AlertDialogAction v-bind="props" :class="cn(buttonVariants({ variant, size }), $attrs.class ?? '')">
+  <AlertDialogAction
+    v-bind="props"
+    :class="cn(buttonVariants({ variant, size }), $attrs.class ?? '')"
+  >
     <slot />
   </AlertDialogAction>
 </template>

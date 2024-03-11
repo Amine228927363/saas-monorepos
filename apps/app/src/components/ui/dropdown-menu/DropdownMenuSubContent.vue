@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { DropdownMenuSubContent, type DropdownMenuSubContentEmits, type DropdownMenuSubContentProps, useForwardPropsEmits } from 'radix-vue'
+import {
+  DropdownMenuSubContent,
+  type DropdownMenuSubContentEmits,
+  type DropdownMenuSubContentProps,
+  useForwardPropsEmits
+} from 'radix-vue'
 import { cn } from '@/lib/shadcn'
 
 const props = defineProps<DropdownMenuSubContentProps>()

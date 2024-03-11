@@ -91,6 +91,7 @@ export const registerSchema = {
     properties: {
       email: { type: 'string', format: 'email' },
       password: { type: 'string', format: 'password' },
+      full_name: { type: 'string' },
     },
     required: ['email', 'password'],
   },

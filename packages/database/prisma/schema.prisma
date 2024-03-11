@@ -3,17 +3,74 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String   @db.Text()
-  create_at  DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  id         String       @id @default(cuid())
+  email      String       @unique
+  password   String       @db.Text()
+  full_name  String?      @db.VarChar(255)
+  create_at  DateTime     @default(now())
+  updated_at DateTime     @default(now()) @updatedAt
+  contactid  Int?
+  contact    ContactInfo? @relation(fields: [contactid], references: [id])
+  task       Task[]
+  customer   Customer[]
 
   @@index([email])
   @@map("users")
+}
+
+model Customer {
+  id                  String             @id @default(cuid())
+  name                String
+  email               String             @unique
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  organizationId      String?
+  organization        Organization?      @relation(fields: [organizationId], references: [id])
+  onboardingProcessID Int?
+  onboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessID], references: [id])
+  TaskKeepBy          String?
+  user                User?              @relation(fields: [TaskKeepBy], references: [id])
+  tasks               Task?
+}
+
+model Organization {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  phone     String     @unique
+  customers Customer[]
+}
+
+model ContactInfo {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String @unique
+  phone     String @unique
+  User      User[]
+}
+
+model OnboardingProcess {
+  id        Int        @id @default(autoincrement())
+  step      String
+  completed Boolean    @default(false)
+  dueDate   DateTime   @updatedAt
+  customers Customer[]
+  tasks     Task[]
+}
+
+model Task {
+  id         Int               @id
+  name       String
+  processId  Int
+  assignedTo String?
+  onboarding OnboardingProcess @relation(fields: [processId], references: [id])
+  userid     User?             @relation(fields: [assignedTo], references: [id])
+  CustomerId String?           @unique
+  customer   Customer?         @relation(fields: [CustomerId], references: [id])
 }

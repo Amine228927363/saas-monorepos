@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { DialogClose, DialogContent, type DialogContentEmits, type DialogContentProps, DialogOverlay, DialogPortal, useEmitAsProps } from 'radix-vue'
+import {
+  DialogClose,
+  DialogContent,
+  type DialogContentEmits,
+  type DialogContentProps,
+  DialogOverlay,
+  DialogPortal,
+  useEmitAsProps
+} from 'radix-vue'
 import { X } from 'lucide-vue-next'
 import { cn } from '@/lib/shadcn'
 
@@ -25,7 +33,9 @@ const emitsAsProps = useEmitAsProps(emits)
     >
       <slot />
 
-      <DialogClose class="absolute right-3 top-3 rounded-md p-0.5 transition-colors hover:bg-secondary">
+      <DialogClose
+        class="absolute right-3 top-3 rounded-md p-0.5 transition-colors hover:bg-secondary"
+      >
         <X class="size-4" />
         <span class="sr-only">Close</span>
       </DialogClose>

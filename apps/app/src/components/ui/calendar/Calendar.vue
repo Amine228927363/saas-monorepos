@@ -62,7 +62,8 @@ function handleNav(direction: 'prev' | 'next') {
 
 onMounted(async () => {
   await nextTick()
-  if (modelValue.value instanceof Date && calendarRef.value) calendarRef.value.focusDate(modelValue.value)
+  if (modelValue.value instanceof Date && calendarRef.value)
+    calendarRef.value.focusDate(modelValue.value)
 })
 
 const $slots = useSlots()
@@ -78,15 +79,28 @@ const vCalendarSlots = computed(() => {
 
 <template>
   <div class="relative">
-    <div v-if="$attrs.mode !== 'time'" class="absolute top-3 z-[1] flex w-full justify-between px-4">
+    <div
+      v-if="$attrs.mode !== 'time'"
+      class="absolute top-3 z-[1] flex w-full justify-between px-4"
+    >
       <button
-        :class="cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')"
+        :class="
+          cn(
+            buttonVariants({ variant: 'outline' }),
+            'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
+          )
+        "
         @click="handleNav('prev')"
       >
         <ChevronLeft class="size-4" />
       </button>
       <button
-        :class="cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')"
+        :class="
+          cn(
+            buttonVariants({ variant: 'outline' }),
+            'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
+          )
+        "
         @click="handleNav('next')"
       >
         <ChevronRight class="size-4" />
@@ -179,7 +193,10 @@ const vCalendarSlots = computed(() => {
 .calendar .vc-day:has(.vc-highlight-base-end) {
   @apply rounded-r-md;
 }
-.calendar .vc-day:has(.vc-highlight-bg-outline):not(:has(.vc-highlight-base-start)):not(:has(.vc-highlight-base-end)) {
+.calendar
+  .vc-day:has(.vc-highlight-bg-outline):not(:has(.vc-highlight-base-start)):not(
+    :has(.vc-highlight-base-end)
+  ) {
   @apply rounded-md;
 }
 .calendar .vc-day-content {
@@ -188,7 +205,10 @@ const vCalendarSlots = computed(() => {
 .calendar .vc-day-content:not(.vc-highlight-content-light) {
   @apply rounded-md;
 }
-.calendar .is-not-in-month:not(:has(.vc-highlight-content-solid)):not(:has(.vc-highlight-content-light)):not(:has(.vc-highlight-content-outline)),
+.calendar
+  .is-not-in-month:not(:has(.vc-highlight-content-solid)):not(
+    :has(.vc-highlight-content-light)
+  ):not(:has(.vc-highlight-content-outline)),
 .calendar .vc-disabled {
   @apply text-muted-foreground opacity-50;
 }

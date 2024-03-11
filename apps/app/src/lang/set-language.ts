@@ -22,7 +22,10 @@ export async function setLanguage(lang: Language): Promise<boolean> {
 
     i18n.global.locale.value = lang
     ;(document.querySelector('html') as HTMLElement).setAttribute('lang', lang)
-    ;(document.querySelector('html') as HTMLElement).setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr')
+    ;(document.querySelector('html') as HTMLElement).setAttribute(
+      'dir',
+      lang === 'ar' ? 'rtl' : 'ltr'
+    )
   }
 
   await loadDayJSLocale(lang)

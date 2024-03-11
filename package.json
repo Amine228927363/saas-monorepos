@@ -24,6 +24,7 @@
     "@saas-monorepo/eslint-config": "workspace:*",
     "@saas-monorepo/prettier-config": "workspace:*",
     "@saas-monorepo/typescript-config": "workspace:*",
+    "ajv-formats": "^2.1.1",
     "commitizen": "^4.3.0",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
@@ -31,12 +32,19 @@
     "inquirer": "^8.2.6",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.1",
-    "turbo": "latest"
+    "tsx": "^4.7.0",
+    "turbo": "latest",
+    "typescript": "^5.3.3"
   },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
   },
-  "packageManager": "pnpm@8.9.0"
+  "packageManager": "pnpm@8.9.0",
+  "dependencies": {
+    "@fastify/autoload": "^5.8.0",
+    "flowbite": "^2.3.0",
+    "flowbite-vue": "^0.1.3"
+  }
 }

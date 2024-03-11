@@ -1,4 +1,8 @@
-import type { EmblaCarouselType as CarouselApi, EmblaOptionsType as CarouselOptions, EmblaPluginType as CarouselPlugin } from 'embla-carousel'
+import type {
+  EmblaCarouselType as CarouselApi,
+  EmblaOptionsType as CarouselOptions,
+  EmblaPluginType as CarouselPlugin
+} from 'embla-carousel'
 import type { HTMLAttributes, Ref } from 'vue'
 
 export interface CarouselProps {

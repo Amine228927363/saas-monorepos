@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { PopoverContent, type PopoverContentEmits, type PopoverContentProps, PopoverPortal, useForwardPropsEmits } from 'radix-vue'
+import {
+  PopoverContent,
+  type PopoverContentEmits,
+  type PopoverContentProps,
+  PopoverPortal,
+  useForwardPropsEmits
+} from 'radix-vue'
 import { cn } from '@/lib/shadcn'
 
 const props = withDefaults(defineProps<PopoverContentProps & { class?: string }>(), {

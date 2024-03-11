@@ -3,10 +3,13 @@ import { SelectIcon, SelectTrigger, type SelectTriggerProps } from 'radix-vue'
 import { ChevronDown } from 'lucide-vue-next'
 import { cn } from '@/lib/shadcn'
 
-const props = withDefaults(defineProps<SelectTriggerProps & { class?: string; invalid?: boolean }>(), {
-  class: '',
-  invalid: false
-})
+const props = withDefaults(
+  defineProps<SelectTriggerProps & { class?: string; invalid?: boolean }>(),
+  {
+    class: '',
+    invalid: false
+  }
+)
 </script>
 
 <template>

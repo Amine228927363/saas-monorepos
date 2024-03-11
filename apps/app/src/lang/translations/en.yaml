@@ -13,3 +13,5 @@ save: Save
 invalid_token: Invalid token
 error: Error
 success: Success
+logout: Log out
+

@@ -7,7 +7,7 @@ import { useAppStore } from '@/stores/app'
 import { provide, ref, toRefs } from 'vue'
 import { router } from '@/router'
 import { useHead } from '@unhead/vue'
-
+import Dashboard from './Dashboard.vue'
 const appStore = useAppStore()
 const { isSideBarOpen } = storeToRefs(appStore)
 
@@ -35,7 +35,7 @@ useHead({
 
 <template>
   <div class="flex h-screen w-full overflow-hidden">
-    <SideBar v-if="isSideBarOpen"></SideBar>
+    <Dashboard />
     <div class="flex w-full flex-col">
       <Header></Header>
       <!-- This is where your child components will be rendered -->

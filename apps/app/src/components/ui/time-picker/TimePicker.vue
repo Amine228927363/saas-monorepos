@@ -3,7 +3,15 @@ import type { HTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { cn } from '@/lib/shadcn'
 import { useI18n } from 'vue-i18n'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { ref } from 'vue'
 import { watchEffect } from 'vue'
 import dayjs from 'dayjs'
@@ -30,7 +38,9 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue
 })
 
-const time = ref<{ minutes: string; seconds: string }>(transformStringToTimeObject(modelValue.value ?? 0))
+const time = ref<{ minutes: string; seconds: string }>(
+  transformStringToTimeObject(modelValue.value ?? 0)
+)
 
 watchEffect(() => {
   modelValue.value = dayjs
@@ -44,7 +54,10 @@ watchEffect(() => {
 
 <template>
   <div class="relative">
-    <div v-bind="$attrs" :class="cn('flex w-full gap-4 max-w-64 items-center justify-between', props.class)">
+    <div
+      v-bind="$attrs"
+      :class="cn('flex w-full gap-4 max-w-64 items-center justify-between', props.class)"
+    >
       <div class="flex w-1/2 flex-col space-y-2">
         <div class="text-sm font-medium">{{ t('minutes') }}</div>
         <Select v-model="time.minutes">
@@ -57,7 +70,12 @@ watchEffect(() => {
               <SelectItem class="cursor-pointer" :value="'00'">
                 {{ $numbro(0).format('00') }}
               </SelectItem>
-              <SelectItem v-for="m in 60" :key="m" class="cursor-pointer" :value="$numbro(m).format('00')">
+              <SelectItem
+                v-for="m in 60"
+                :key="m"
+                class="cursor-pointer"
+                :value="$numbro(m).format('00')"
+              >
                 {{ $numbro(m).format('00') }}
               </SelectItem>
             </SelectGroup>
@@ -76,7 +94,12 @@ watchEffect(() => {
               <SelectItem class="cursor-pointer" :value="'00'">
                 {{ $numbro(0).format('00') }}
               </SelectItem>
-              <SelectItem v-for="s in 60" :key="s" class="cursor-pointer" :value="$numbro(s).format('00')">
+              <SelectItem
+                v-for="s in 60"
+                :key="s"
+                class="cursor-pointer"
+                :value="$numbro(s).format('00')"
+              >
                 {{ $numbro(s).format('00') }}
               </SelectItem>
             </SelectGroup>

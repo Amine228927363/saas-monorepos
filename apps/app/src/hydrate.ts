@@ -12,7 +12,9 @@ type GenericStore = {
 
   [key: string]: any
 }
-export function useStores(stores = [useAppStore, useAuthStore, useUserStore, useCommonStore]): GenericStore[] {
+export function useStores(
+  stores = [useAppStore, useAuthStore, useUserStore, useCommonStore]
+): GenericStore[] {
   return stores.map((useStore) => useStore()) as GenericStore[]
 }
 export async function hydrate(): Promise<void> {

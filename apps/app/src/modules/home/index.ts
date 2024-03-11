@@ -9,5 +9,5 @@ export default defineModule({
       path: '',
       component: HomeOverview
     }
-  ],
+  ]
 })

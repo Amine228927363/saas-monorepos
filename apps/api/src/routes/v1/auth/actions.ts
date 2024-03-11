@@ -1,37 +1,36 @@
 import { FastifyPluginAsync } from 'fastify';
+import { request } from 'http';
 import _ from 'lodash';
 
-import {
-  authCheckSchema,
-  loginSchema,
-  registerSchema,
-} from '../../../schemas/index.js';
+import { authCheckSchema, loginSchema, registerSchema } from '../../../schemas/index.js';
 import { AuthenticationService } from '../../../services/authentication.js';
 import { LoginPayload, RegisterPayload, ResetPayload } from '../../../types/auth.js';
 
 const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { prisma } = fastify;
   const authService = new AuthenticationService({ prisma });
+  fastify.get('/', async (request, reply) => {
+    reply.send('Hello World');
+  }),
+    fastify.post<{ Body: LoginPayload }>(
+      '/login',
+      {
+        schema: loginSchema,
+      },
+      async (request, reply) => {
+        try {
+          const data = await authService.login(request.body);
 
-  fastify.post<{ Body: LoginPayload }>(
-    '/login',
-    {
-      schema: loginSchema,
-    },
-    async (request, reply) => {
-      try {
-        const data = await authService.login(request.body);
-
-        // Generating Token
-        return reply.code(200).send({
-          access_token: data.accessToken,
-          user: _.omit(data.user, ['password']),
-        });
-      } catch (err) {
-        throw err;
-      }
-    },
-  );
+          // Generating Token
+          return reply.code(200).send({
+            access_token: data.accessToken,
+            user: _.omit(data.user, ['password']),
+          });
+        } catch (err) {
+          throw err;
+        }
+      },
+    );
   fastify.post<{ Body: RegisterPayload }>(
     '/register',
     {
@@ -40,10 +39,8 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     async (request, reply) => {
       try {
         const data = await authService.register(request.body);
-        return reply.code(200).send({
-          message: request.t('account_created_successfully'),
-          code: 'account_created_successfully',
-        });
+
+        return data;
       } catch (err) {
         throw err;
       }

@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { TooltipContent, type TooltipContentEmits, type TooltipContentProps, TooltipPortal, useForwardPropsEmits } from 'radix-vue'
+import {
+  TooltipContent,
+  type TooltipContentEmits,
+  type TooltipContentProps,
+  TooltipPortal,
+  useForwardPropsEmits
+} from 'radix-vue'
 import { cn } from '@/lib/shadcn'
 
 const props = withDefaults(defineProps<TooltipContentProps>(), {

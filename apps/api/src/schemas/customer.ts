@@ -1,13 +1,57 @@
-export const getLoggedUserDataSchema = {
-  tags: ['users'],
-  response: {
-    200: {
-      description: 'Successful response',
+export const customerSchema = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    email: { type: 'string', format: 'email' },
+    name: { type: 'string' },
+    createdAt: { type: 'string', format: 'date-time' },
+    updatedAt: { type: 'string', format: 'date-time' },
+    organizationId: { type: 'string' },
+    tasks: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          taskId: { type: 'string' },
+          taskName: { type: 'string' },
+        },
+      },
+    },
+    user: {
       type: 'object',
       properties: {
         id: { type: 'string' },
-        email: { type: 'string' },
+        email: { type: 'string', format: 'email' },
         full_name: { type: 'string' },
+      },
+    },
+  },
+};
+export const getAllCustomersSchema = {
+  tags: ['customers'],
+  response: {
+    200: {
+      description: 'Successful response',
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          email: { type: 'string' },
+          name: { type: 'string' },
+          createdAt: { type: 'string', format: 'date-time' },
+          updatedAt: { type: 'string', format: 'date-time' },
+          organizationId: { type: 'string' },
+          tasks: { type: 'array', items: { type: 'string' } },
+          user: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              email: { type: 'string' },
+              fullName: { type: 'string' },
+            },
+          },
+        },
       },
     },
     '4xx': {
@@ -29,24 +73,22 @@ export const getLoggedUserDataSchema = {
     },
   },
 };
-//get user Schema
-export const getUserByIdSchema = {
-  tags: ['users'],
+
+export const getCustomerByIdSchema = {
+  tags: ['customers'],
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' },
+      customerId: { type: 'string' },
     },
-    required: ['userId'],
+    required: ['customerId'],
   },
   response: {
     200: {
       description: 'Successful response',
       type: 'object',
       properties: {
-        id: { type: 'string' },
-        email: { type: 'string' },
-        full_name: { type: 'string' },
+        customer: customerSchema,
       },
     },
     '4xx': {
@@ -58,7 +100,7 @@ export const getUserByIdSchema = {
       },
     },
     500: {
-      description: 'user doesn t exist ',
+      description: 'Customer does not exist',
       type: 'object',
       properties: {
         status: { type: 'number', default: 500 },
@@ -68,21 +110,30 @@ export const getUserByIdSchema = {
     },
   },
 };
-//update user Schema
-export const updateUserSchema = {
-  tags: ['users'],
+
+export const updateCustomerSchema = {
+  tags: ['customers'],
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' },
+      id: { type: 'string' },
     },
-    required: ['userId'],
+    required: ['id'],
   },
   body: {
     type: 'object',
     properties: {
       email: { type: 'string', format: 'email' },
-      full_name: { type: 'string' },
+      name: { type: 'string' },
+      organizationId: { type: 'string' },
+      user: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          email: { type: 'string', format: 'email' },
+          full_name: { type: 'string' },
+        },
+      },
     },
     required: [],
   },
@@ -91,9 +142,7 @@ export const updateUserSchema = {
       description: 'Successful response',
       type: 'object',
       properties: {
-        id: { type: 'string' },
-        email: { type: 'string' },
-        full_name: { type: 'string' },
+        customer: customerSchema,
       },
     },
     '4xx': {
@@ -115,19 +164,19 @@ export const updateUserSchema = {
     },
   },
 };
-//delete user Schema
-export const deleteUserSchema = {
-  tags: ['users'],
+
+export const deleteCustomerSchema = {
+  tags: ['customers'],
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' },
+      customerId: { type: 'string' },
     },
-    required: ['userId'],
+    required: ['customerId'],
   },
   response: {
     200: {
-      description: 'user deleted successfully',
+      description: 'Customer deleted successfully',
       type: 'object',
       properties: {
         message: { type: 'string' },

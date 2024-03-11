@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon src/index.ts",
-    "start": "dotenv -e ../../.env.production -- node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "start": "dotenv -e ../../.env.development node src/index.js",
     "clean": "rm -rf .turbo node_modules dist"
   },
   "keywords": [],

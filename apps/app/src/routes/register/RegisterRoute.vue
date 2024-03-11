@@ -16,6 +16,8 @@ const authStore = useAuthStore()
 const { isLoading } = storeToRefs(authStore)
 const formSchema = toTypedSchema(
   z.object({
+    First_name: z.string().min(3),
+    Last_name: z.string(),
     email: z.string().email(),
     password: z.string().min(6)
   })
@@ -24,12 +26,9 @@ const formSchema = toTypedSchema(
 const form = useForm({
   validationSchema: formSchema
 })
-
 const onSubmit = form.handleSubmit(async (values) => {
-  await authStore.login(values)
-  if (authStore.isAuthenticated) {
-    router.replace({ name: 'home-overview' })
-  }
+  await authStore.register(values)
+  router.replace({ name: 'login' })
 })
 </script>
 <template>
@@ -37,7 +36,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     <div class="flex w-full items-center justify-center">
       <form class="max-w-xs" @submit.prevent="onSubmit">
         <div class="w-full max-w-xs self-center pb-11 text-center">
-          <h1 class="pb-2 text-4xl font-extrabold">{{ t('sign_in') }}</h1>
+          <h1 class="pb-2 text-4xl font-extrabold">Sign Up</h1>
           <p class="font- text-muted-foreground pb-2 text-sm">{{ t('login_text') }}</p>
           <label
             class="text-destructive bg-transparent text-xs"
@@ -48,6 +47,14 @@ const onSubmit = form.handleSubmit(async (values) => {
         <div class="flex flex-col gap-5">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
+              <FormLabel>Firstname</FormLabel>
+              <FormControl>
+                <Input type="text" placeholder="firstname" />
+              </FormControl>
+              <FormLabel>Lastname</FormLabel>
+              <FormControl>
+                <Input type="text" placeholder="lastname" />
+              </FormControl>
               <FormLabel>{{ t('email') }}</FormLabel>
               <FormControl>
                 <Input type="text" placeholder="example@gmail.com" v-bind="componentField" />
@@ -65,13 +72,13 @@ const onSubmit = form.handleSubmit(async (values) => {
             </FormItem>
           </FormField>
           <router-link
-            :to="{ name: 'forgot' }"
+            :to="{ name: 'login' }"
             class="text-info text-sm font-semibold hover:underline"
-            >{{ t('did_you_forget_password') }}</router-link
+            >You already have an account ?</router-link
           >
           <Button :disabled="isLoading">
             <LoaderSpinner v-if="isLoading" class="mr-2 size-4 animate-spin" />
-            <span>{{ t('sign_in') }}</span>
+            <span>SignUp</span>
           </Button>
         </div>
       </form>

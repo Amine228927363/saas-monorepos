@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import api from '@/services/api'
 import { router } from '@/router'
 import { dehydrate, hydrate } from '@/hydrate'
-import type { LoginBody } from '@/types'
+import type { LoginBody, RegisterBody } from '@/types'
 import type { ServerError } from '@/types/server'
 
 let firstRefresh = true
@@ -75,6 +75,15 @@ export const useAuthStore = defineStore({
       this.isLoading = false
 
       router.replace({ name: 'login' })
+    },
+    async register(data: RegisterBody) {
+      try {
+        const response = await api.post('/auth/register', data)
+
+        return response.data
+      } catch (error) {
+        console.log(error, 'sign up failed')
+      }
     }
   }
 })

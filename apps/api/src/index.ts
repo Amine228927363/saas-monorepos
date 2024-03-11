@@ -1,11 +1,12 @@
 import { ajvFilePlugin } from '@fastify/multipart';
+import { PrismaClient, User } from '@saas-monorepo/database';
+import { Format } from 'ajv';
 import ajvFormat from 'ajv-formats';
 // Require library to exit fastify process, gracefully (if possible)
 import closeWithGrace from 'close-with-grace';
 import { FastifyInstance, FastifyServerOptions, fastify } from 'fastify';
 
-import { PrismaClient, User } from '@saas-monorepo/database';
-
+const AjvFormat = ajvFormat as unknown as (format: Format) => Format;
 type Fastify = typeof fastify;
 declare module 'fastify' {
   interface FastifyInstance {
@@ -44,7 +45,7 @@ const app = await createServerApp(fastify, {
       allowUnionTypes: true,
       strict: false,
     },
-    plugins: [ajvFormat, ajvFilePlugin],
+    plugins: [AjvFormat, ajvFilePlugin],
   },
 });
 
@@ -63,6 +64,7 @@ const closeListeners = closeWithGrace(
 app.addHook('onClose', async () => {
   closeListeners.uninstall();
 });
+
 //server listen
 
 const port = process.env['SERVER_PORT'] || 8000;

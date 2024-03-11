@@ -2,8 +2,10 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { hydrate } from '@/hydrate'
 import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
-
+import privateView from './views/private-view.vue'
+import publicView from './views/public-view.vue'
 import LoginRoute from '@/routes/login/login-route.vue'
+import RegisterRoute from './routes/register/RegisterRoute.vue'
 import ForgotRoute from '@/routes/forgot/forgot-route.vue'
 import ResetRoute from '@/routes/reset/reset-route.vue'
 import PrivateNotFoundRoute from '@/routes/private-not-found-route.vue'
@@ -33,6 +35,22 @@ const defaultRoutes: RouteRecordRaw[] = [
     name: 'forgot',
     path: '/forgot',
     component: ForgotRoute,
+    meta: {
+      public: true
+    }
+  },
+  {
+    name: 'register',
+    path: '/register',
+    component: RegisterRoute,
+    meta: {
+      public: true
+    }
+  },
+  {
+    name: 'dashboard',
+    path: '/dashboard',
+    component: privateView,
     meta: {
       public: true
     }

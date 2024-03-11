@@ -37,8 +37,12 @@ const onSubmit = form.handleSubmit(async (values) => {
       <form class="max-w-xs" @submit.prevent="onSubmit">
         <div class="w-full max-w-xs self-center pb-11 text-center">
           <h1 class="pb-2 text-4xl font-extrabold">{{ t('did_you_forget_password') }}</h1>
-          <p class="font- pb-2 text-sm text-muted-foreground">{{ t('enter_your_email_to_reset') }}</p>
-          <label class="bg-transparent text-xs text-destructive" :class="[!authStore.isLoading && authStore.error ? 'block' : 'hidden']"
+          <p class="font- pb-2 text-sm text-muted-foreground">
+            {{ t('enter_your_email_to_reset') }}
+          </p>
+          <label
+            class="bg-transparent text-xs text-destructive"
+            :class="[!authStore.isLoading && authStore.error ? 'block' : 'hidden']"
             >{{ authStore.error?.code ? t(authStore.error?.code) : authStore.error?.message }}
           </label>
         </div>
@@ -52,9 +56,11 @@ const onSubmit = form.handleSubmit(async (values) => {
               <FormMessage name="email" />
             </FormItem>
           </FormField>
-          <router-link :to="{ name: 'login' }" class="text-sm font-semibold text-info hover:underline">{{
-            t('login_different_account')
-          }}</router-link>
+          <router-link
+            :to="{ name: 'login' }"
+            class="text-sm font-semibold text-info hover:underline"
+            >{{ t('login_different_account') }}</router-link
+          >
           <Button :disabled="isLoading">
             <LoaderSpinner v-if="isLoading" class="mr-2 size-4 animate-spin" />
             <span>{{ t('send') }}</span>
