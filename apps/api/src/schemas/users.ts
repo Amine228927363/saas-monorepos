@@ -1,3 +1,14 @@
+export const userSchema = {
+  type: 'object',
+  properties: {
+    id: { type: 'string', format: 'uuid' },
+    fullName: { type: 'string' },
+    email: { type: 'string', format: 'email' },
+    password: { type: 'string' },
+  },
+  required: ['fullName', 'email', 'password'],
+};
+
 export const getLoggedUserDataSchema = {
   tags: ['users'],
   response: {
@@ -8,6 +19,41 @@ export const getLoggedUserDataSchema = {
         id: { type: 'string' },
         email: { type: 'string' },
         full_name: { type: 'string' },
+      },
+    },
+    '4xx': {
+      type: 'object',
+      properties: {
+        status: { type: 'number' },
+        code: { type: 'string' },
+        message: { type: 'string' },
+      },
+    },
+    500: {
+      description: 'Error response',
+      type: 'object',
+      properties: {
+        status: { type: 'number', default: 500 },
+        code: { type: 'string' },
+        message: { type: 'string' },
+      },
+    },
+  },
+};
+//get all user schema
+export const getAllUsersSchema = {
+  tags: ['users'],
+  response: {
+    200: {
+      description: 'Successful response',
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          email: { type: 'string' },
+          full_name: { type: 'string' },
+        },
       },
     },
     '4xx': {
@@ -58,7 +104,7 @@ export const getUserByIdSchema = {
       },
     },
     500: {
-      description: 'user doesn t exist ',
+      description: 'Error response',
       type: 'object',
       properties: {
         status: { type: 'number', default: 500 },

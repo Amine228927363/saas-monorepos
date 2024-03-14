@@ -10,14 +10,14 @@ import { router } from '@/router'
 import { Input } from '@/components/ui/input'
 import * as z from 'zod'
 import { storeToRefs } from 'pinia'
+import { values } from 'lodash'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
 const { isLoading } = storeToRefs(authStore)
 const formSchema = toTypedSchema(
   z.object({
-    First_name: z.string().min(3),
-    Last_name: z.string(),
+    Fullname: z.string().min(3),
     email: z.string().email(),
     password: z.string().min(6)
   })
@@ -47,17 +47,13 @@ const onSubmit = form.handleSubmit(async (values) => {
         <div class="flex flex-col gap-5">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
-              <FormLabel>Firstname</FormLabel>
+              <FormLabel>Fullname</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="firstname" />
-              </FormControl>
-              <FormLabel>Lastname</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="lastname" />
+                <Input type="text" placeholder="firstname" v-model="form.values.Fullname" />
               </FormControl>
               <FormLabel>{{ t('email') }}</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="example@gmail.com" v-bind="componentField" />
+                <Input type="text" placeholder="example@gmail.com" v-model="form.values.email" />
               </FormControl>
               <FormMessage name="email" />
             </FormItem>
@@ -66,7 +62,11 @@ const onSubmit = form.handleSubmit(async (values) => {
             <FormItem>
               <FormLabel>{{ t('password') }}</FormLabel>
               <FormControl>
-                <Input type="password" :placeholder="t('password')" v-bind="componentField" />
+                <Input
+                  type="password"
+                  :placeholder="t('password')"
+                  v-model="form.values.password"
+                />
               </FormControl>
               <FormMessage name="password" />
             </FormItem>

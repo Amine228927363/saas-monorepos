@@ -1,3 +1,6 @@
+import { taskSchema } from './task.js';
+import { userSchema } from './users.js';
+
 export const customerSchema = {
   type: 'object',
   properties: {
@@ -7,26 +10,96 @@ export const customerSchema = {
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
     organizationId: { type: 'string' },
-    tasks: {
-      type: 'array',
-      items: {
+    tasks: taskSchema,
+    user: userSchema,
+  },
+};
+//create customer schema
+export const createCustomerSchema = {
+  tags: ['customers'],
+  body: {
+    type: 'object',
+    required: ['email', 'name'],
+    properties: {
+      email: { type: 'string', format: 'email' },
+      name: { type: 'string' },
+      organizationId: { type: 'string' },
+      tasks: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            taskId: { type: 'string' },
+            taskName: { type: 'string' },
+          },
+        },
+      },
+      user: {
         type: 'object',
         properties: {
-          taskId: { type: 'string' },
-          taskName: { type: 'string' },
+          id: { type: 'string' },
+          email: { type: 'string', format: 'email' },
+          full_name: { type: 'string' },
         },
       },
     },
-    user: {
+  },
+  response: {
+    201: {
+      description: 'successfull response',
       type: 'object',
       properties: {
-        id: { type: 'string' },
         email: { type: 'string', format: 'email' },
-        full_name: { type: 'string' },
+        name: { type: 'string' },
+        organizationId: { type: 'string' },
+        tasks: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              taskId: { type: 'string' },
+              taskName: { type: 'string' },
+              user: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  email: { type: 'string', format: 'email' },
+                  full_name: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            email: { type: 'string', format: 'email' },
+            full_name: { type: 'string' },
+          },
+        },
+      },
+    },
+    '4xx': {
+      type: 'object',
+      properties: {
+        status: { type: 'number' },
+        code: { type: 'string' },
+        message: { type: 'string' },
+      },
+    },
+    500: {
+      description: 'Customer does not exist',
+      type: 'object',
+      properties: {
+        status: { type: 'number', default: 500 },
+        code: { type: 'string' },
+        message: { type: 'string' },
       },
     },
   },
 };
+
 export const getAllCustomersSchema = {
   tags: ['customers'],
   response: {

@@ -39,7 +39,6 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     async (request, reply) => {
       try {
         const data = await authService.register(request.body);
-
         return data;
       } catch (err) {
         throw err;

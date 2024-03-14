@@ -3,6 +3,7 @@ import { updateUserPayload } from 'src/types/users.js';
 
 import {
   deleteUserSchema,
+  getAllUsersSchema,
   getLoggedUserDataSchema,
   getUserByIdSchema,
   updateUserSchema,
@@ -26,12 +27,13 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
     },
   );
+
   fastify.get<{ Params: { id: string } }>(
     '/user/:id',
     { schema: getUserByIdSchema },
     async (request, reply) => {
       const userId = request.params.id;
-      if (!userId) {
+      if (!userId || userId.trim().length === 0) {
         return reply.status(400).send('Invalid id');
       }
       const data = await usersService.getUser(userId);
@@ -42,10 +44,12 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       return reply.status(200).send(data);
     },
   );
-  fastify.get('/allUsers', async (request, reply) => {
+
+  fastify.get('/allUsers', { schema: getAllUsersSchema }, async (request, reply) => {
     const users = await usersService.getAllUsers();
-    return reply.status(200).send(users);
+    return reply.send(users);
   });
+
   fastify.put<{ Params: { id: string } }>(
     '/updateUser/:id',
     { schema: updateUserSchema },
@@ -69,6 +73,7 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
     },
   );
+
   fastify.delete<{ Params: { id: string } }>(
     '/deleteUser/:id',
     { schema: deleteUserSchema },

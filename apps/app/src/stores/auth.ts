@@ -48,7 +48,7 @@ export const useAuthStore = defineStore({
       this.isLoading = true
       this.error = null
       try {
-        const response = await api.post('/auth/login', data)
+        const response = await api.post('/api/v1/auth/login', data)
 
         localStorage.setItem('access_token', response.data.access_token)
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`

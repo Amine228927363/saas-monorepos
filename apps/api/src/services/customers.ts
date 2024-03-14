@@ -1,4 +1,6 @@
 import { Customer, PrismaClient } from '@saas-monorepo/database';
+import { createContactPayload } from 'src/types/contact.js';
+import { createCustomerPayload } from 'src/types/customers.js';
 
 import { AbstractServiceOptions } from '../types/services.js';
 
@@ -46,6 +48,30 @@ export class CustomersService {
       });
     } catch (error) {
       throw new Error(`Could not delete customer with ID: ${id}`);
+    }
+  }
+  async createCustomer(payload: createCustomerPayload) {
+    try {
+      let customer = await this.prisma.customer.findUniqueOrThrow({
+        where: { email: payload.email.toLowerCase() },
+        select: {
+          email: true,
+          name: true,
+          organizationId: true,
+        },
+      });
+      if (customer) {
+        throw new Error('customer already exist');
+      }
+      await this.prisma.customer.create({
+        data: {
+          email: payload.email,
+          name: payload.name,
+          organizationId: payload.organizationid,
+        },
+      });
+    } catch (error) {
+      throw new Error('Could not create customer');
     }
   }
 }

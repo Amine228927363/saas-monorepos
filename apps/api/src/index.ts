@@ -1,3 +1,4 @@
+import fastifyCors from '@fastify/cors';
 import { ajvFilePlugin } from '@fastify/multipart';
 import { PrismaClient, User } from '@saas-monorepo/database';
 import { Format } from 'ajv';

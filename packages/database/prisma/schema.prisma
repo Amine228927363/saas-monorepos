@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(cuid())
-  email      String       @unique
-  password   String       @db.Text()
-  full_name  String?      @db.VarChar(255)
-  create_at  DateTime     @default(now())
-  updated_at DateTime     @default(now()) @updatedAt
-  contactid  Int?
-  contact    ContactInfo? @relation(fields: [contactid], references: [id])
-  task       Task[]
-  customer   Customer[]
+  id                  String             @id @default(cuid())
+  email               String             @unique
+  password            String             @db.Text()
+  full_name           String?            @db.VarChar(255)
+  create_at           DateTime           @default(now())
+  updated_at          DateTime           @default(now()) @updatedAt
+  contactid           Int?
+  contact             ContactInfo?       @relation(fields: [contactid], references: [id])
+  task                Task[]
+  customer            Customer[]
+  OnboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessId], references: [id])
+  onboardingProcessId Int?
 
   @@index([email])
   @@map("users")
@@ -60,17 +62,20 @@ model OnboardingProcess {
   step      String
   completed Boolean    @default(false)
   dueDate   DateTime   @updatedAt
-  customers Customer[]
+  customer Customer[]
   tasks     Task[]
+  user      User[]
 }
 
 model Task {
-  id         Int               @id
-  name       String
-  processId  Int
-  assignedTo String?
-  onboarding OnboardingProcess @relation(fields: [processId], references: [id])
-  userid     User?             @relation(fields: [assignedTo], references: [id])
-  CustomerId String?           @unique
-  customer   Customer?         @relation(fields: [CustomerId], references: [id])
+  id          Int               @id
+  name        String
+  description String?
+  processId   Int
+  assignedTo  String?
+  onboarding  OnboardingProcess @relation(fields: [processId], references: [id])
+  userid      User?             @relation(fields: [assignedTo], references: [id])
+  CustomerId  String?           @unique
+  customer    Customer?         @relation(fields: [CustomerId], references: [id])
+  completed   Boolean           @default(false)
 }
