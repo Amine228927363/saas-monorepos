@@ -9,10 +9,12 @@ import {
   updateUserSchema,
 } from '../../../schemas/users.js';
 import { UsersService } from '../../../services/users.js';
+import autohooks from './autohooks.js';
 
 const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { prisma } = fastify;
   const usersService = new UsersService({ prisma });
+
   fastify.get(
     '/me',
     {

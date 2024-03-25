@@ -4,6 +4,9 @@ import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
 import privateView from './views/private-view.vue'
 import publicView from './views/public-view.vue'
+import CustomerView from './modules/home/routes/Customers.vue'
+import TaskView from './modules/home/routes/Tasks.vue'
+import HomeOverview from './modules/home/routes/home-overview.vue'
 import LoginRoute from '@/routes/login/login-route.vue'
 import RegisterRoute from './routes/register/RegisterRoute.vue'
 import ForgotRoute from '@/routes/forgot/forgot-route.vue'
@@ -48,9 +51,25 @@ const defaultRoutes: RouteRecordRaw[] = [
     }
   },
   {
-    name: 'dashboard',
-    path: '/dashboard',
-    component: privateView,
+    name: 'home-overview',
+    path: '/home',
+    component: HomeOverview,
+    meta: {
+      public: true
+    }
+  },
+  {
+    name: 'customer-view',
+    path: '/customer',
+    component: CustomerView,
+    meta: {
+      public: true
+    }
+  },
+  {
+    name: 'task-view',
+    path: '/task',
+    component: TaskView,
     meta: {
       public: true
     }

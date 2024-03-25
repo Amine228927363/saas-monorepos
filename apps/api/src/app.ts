@@ -1,6 +1,6 @@
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
 import fastifyCors from '@fastify/cors';
-import { FastifyPluginAsync, FastifyServerOptions } from 'fastify';
+import fastify, { FastifyPluginAsync, FastifyServerOptions } from 'fastify';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'path';
 

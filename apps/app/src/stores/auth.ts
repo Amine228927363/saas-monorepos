@@ -4,7 +4,7 @@ import { router } from '@/router'
 import { dehydrate, hydrate } from '@/hydrate'
 import type { LoginBody, RegisterBody } from '@/types'
 import type { ServerError } from '@/types/server'
-
+import type { User } from '@/types/users'
 let firstRefresh = true
 let isRefreshing = false
 export const useAuthStore = defineStore({
@@ -48,7 +48,7 @@ export const useAuthStore = defineStore({
       this.isLoading = true
       this.error = null
       try {
-        const response = await api.post('/api/v1/auth/login', data)
+        const response = await api.post('/auth/login', data)
 
         localStorage.setItem('access_token', response.data.access_token)
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
@@ -77,13 +77,19 @@ export const useAuthStore = defineStore({
       router.replace({ name: 'login' })
     },
     async register(data: RegisterBody) {
+      this.isLoading = true
+      this.error = null
       try {
         const response = await api.post('/auth/register', data)
-
-        return response.data
-      } catch (error) {
-        console.log(error, 'sign up failed')
+        await this.login({
+          email: data.email,
+          password: data.password
+        })
+      } catch (err: any) {
+        this.error = err?.response?.data
+        this.isAuthenticated = false
       }
+      this.isLoading = false
     }
   }
 })

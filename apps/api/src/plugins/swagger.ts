@@ -12,16 +12,16 @@ export default fp<FastifySwaggerOptions>(
     let url = '';
     switch (process.env['NODE_ENV']) {
       case 'development':
-        url = 'http://localhost:8000';
+        url = 'http://localhost:3000';
         break;
       case 'staging':
-        url = 'http://localhost:8000';
+        url = 'http://localhost:3000';
         break;
       case 'production':
-        url = 'http://localhost:8000';
+        url = 'http://localhost:3000';
         break;
       default:
-        url = 'http://localhost:8000';
+        url = 'http://localhost:3000';
         break;
     }
     fastify.register(swagger, {

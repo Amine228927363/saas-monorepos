@@ -120,9 +120,9 @@ export const updateUserSchema = {
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' },
+      id: { type: 'string' },
     },
-    required: ['userId'],
+    required: ['id'],
   },
   body: {
     type: 'object',

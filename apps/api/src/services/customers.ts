@@ -1,6 +1,6 @@
 import { Customer, PrismaClient } from '@saas-monorepo/database';
 import { createContactPayload } from 'src/types/contact.js';
-import { createCustomerPayload } from 'src/types/customers.js';
+import { createCustomerPayload, updateCustomerPayload } from 'src/types/customers.js';
 
 import { AbstractServiceOptions } from '../types/services.js';
 
@@ -12,7 +12,7 @@ export class CustomersService {
   async getCustomerById(id: string): Promise<Customer | null> {
     try {
       const customer = await this.prisma.customer.findUnique({
-        where: { id },
+        where: { id: id },
       });
       return customer;
     } catch (error) {
@@ -29,7 +29,7 @@ export class CustomersService {
     }
   }
 
-  async updateCustomer(id: string, customerData: Partial<Customer>): Promise<Customer | null> {
+  async updateCustomer(id: string, customerData: updateCustomerPayload) {
     try {
       const updatedCustomer = await this.prisma.customer.update({
         where: { id },
@@ -52,11 +52,12 @@ export class CustomersService {
   }
   async createCustomer(payload: createCustomerPayload) {
     try {
-      let customer = await this.prisma.customer.findUniqueOrThrow({
+      let customer = await this.prisma.customer.findUnique({
         where: { email: payload.email.toLowerCase() },
         select: {
           email: true,
           name: true,
+          status: true,
           organizationId: true,
         },
       });
@@ -67,11 +68,13 @@ export class CustomersService {
         data: {
           email: payload.email,
           name: payload.name,
+          status: payload.status,
           organizationId: payload.organizationid,
         },
       });
     } catch (error) {
-      throw new Error('Could not create customer');
+      console.log(error);
+      throw new Error();
     }
   }
 }

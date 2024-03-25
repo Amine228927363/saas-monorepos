@@ -29,6 +29,7 @@ model Customer {
   id                  String             @id @default(cuid())
   name                String
   email               String             @unique
+  status String
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
   organizationId      String?
@@ -62,7 +63,7 @@ model OnboardingProcess {
   step      String
   completed Boolean    @default(false)
   dueDate   DateTime   @updatedAt
-  customer Customer[]
+  customer  Customer[]
   tasks     Task[]
   user      User[]
 }
@@ -74,7 +75,7 @@ model Task {
   processId   Int
   assignedTo  String?
   onboarding  OnboardingProcess @relation(fields: [processId], references: [id])
-  userid      User?             @relation(fields: [assignedTo], references: [id])
+  user        User?             @relation(fields: [assignedTo], references: [id])
   CustomerId  String?           @unique
   customer    Customer?         @relation(fields: [CustomerId], references: [id])
   completed   Boolean           @default(false)

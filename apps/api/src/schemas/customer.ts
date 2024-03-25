@@ -7,6 +7,7 @@ export const customerSchema = {
     id: { type: 'string' },
     email: { type: 'string', format: 'email' },
     name: { type: 'string' },
+    status: { type: 'string' },
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
     organizationId: { type: 'string' },
@@ -23,7 +24,8 @@ export const createCustomerSchema = {
     properties: {
       email: { type: 'string', format: 'email' },
       name: { type: 'string' },
-      organizationId: { type: 'string' },
+      status: { type: 'string' },
+      organization: { type: 'string' },
       tasks: {
         type: 'array',
         items: {
@@ -51,6 +53,7 @@ export const createCustomerSchema = {
       properties: {
         email: { type: 'string', format: 'email' },
         name: { type: 'string' },
+        status: { type: 'string' },
         organizationId: { type: 'string' },
         tasks: {
           type: 'array',
@@ -112,6 +115,7 @@ export const getAllCustomersSchema = {
           id: { type: 'string' },
           email: { type: 'string' },
           name: { type: 'string' },
+          status: { type: 'string' },
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
           organizationId: { type: 'string' },
@@ -154,14 +158,34 @@ export const getCustomerByIdSchema = {
     properties: {
       customerId: { type: 'string' },
     },
-    required: ['customerId'],
   },
   response: {
     200: {
       description: 'Successful response',
       type: 'object',
       properties: {
-        customer: customerSchema,
+        email: { type: 'string', format: 'email' },
+        name: { type: 'string' },
+        status: { type: 'string' },
+        organizationId: { type: 'string' },
+        tasks: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              taskId: { type: 'string' },
+              taskName: { type: 'string' },
+              user: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  email: { type: 'string', format: 'email' },
+                  full_name: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
       },
     },
     '4xx': {
@@ -198,6 +222,7 @@ export const updateCustomerSchema = {
     properties: {
       email: { type: 'string', format: 'email' },
       name: { type: 'string' },
+      status: { type: 'string' },
       organizationId: { type: 'string' },
       user: {
         type: 'object',
@@ -208,7 +233,6 @@ export const updateCustomerSchema = {
         },
       },
     },
-    required: [],
   },
   response: {
     200: {
