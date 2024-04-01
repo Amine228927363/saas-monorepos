@@ -10,17 +10,17 @@
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="task in tasks" :key="task.id">
+        <TableRow v-for="task in Tasks" :key="task.id">
           <TableCell class="font-medium">{{ task.id }}</TableCell>
           <TableCell>{{ task.description }}</TableCell>
-          <TableCell>{{ task.status }}</TableCell>
-          <TableCell class="text-right">{{ task.customer }}</TableCell>
+          <TableCell>{{ task.completed }}</TableCell>
+          <TableCell class="text-right">{{ customer}}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   import {
     Table,
     TableBody,
@@ -30,27 +30,43 @@
     TableHeader,
     TableRow,
   } from '@/components/ui/table';
-  
-  // Function to generate a random customer name
-  function generateRandomName() {
-    const names = ['John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown', 'Emma Davis'];
-    return names[Math.floor(Math.random() * names.length)];
+import { useCustomerStore } from '@/stores/customer';
+  import { useTaskStore } from '@/stores/task';
+import { ref,onMounted } from 'vue';
+ const taskStore= useTaskStore();
+ const customerStore= useCustomerStore();
+ const Tasks= ref([]);
+ const customerCache = new Map();
+ const getCustomerName = async (CustomerId)=>{
+try {
+    
+      const customer = await customerStore.getCustomerById(CustomerId);
+      customerCache.set(CustomerId, customer.name);
+      return customer.name;
+    
+  } catch (error) {
+    console.log('Error:', error);
+    return ''; 
   }
-  
-  // Simulated fetched data, replace this with your actual API call
-  const tasks = [
-    { id: 1, description: 'Task 1', status: 'Pending', customer: generateRandomName() },
-    { id: 2, description: 'Task 2', status: 'Completed', customer: generateRandomName() },
-    { id: 3, description: 'Task 3', status: 'Pending', customer: generateRandomName() },
-    { id: 5, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 6, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 7, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 8, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 9, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 10, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 11, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-    { id: 12, description: 'Task 4', status: 'Completed', customer: generateRandomName() },
-  ];
-  
+ };
+ const fetchTasks = async () => {
+  try {
+    const fetchedTasks = await taskStore.getAllTasks();
+    const tasksWithCustomerNames = await Promise.all(
+      fetchedTasks.map(async (task) => {
+        const customerName = await getCustomerName(task.CustomerId);
+        return {
+          ...task,
+          customer: customerName,
+        };
+      })
+    );
+
+    Tasks.value = tasksWithCustomerNames;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+};
+onMounted(fetchTasks);
   </script>
   

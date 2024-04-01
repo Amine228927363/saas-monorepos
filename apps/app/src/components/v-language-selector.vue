@@ -16,8 +16,8 @@ watchEffect(async () => {
 })
 </script>
 <template>
-  <Select v-model:model-value="selectedLanguage" disabled>
-    <SelectTrigger class="text-info w-24 border-none text-sm font-medium capitalize">
+  <Select v-model:model-value="selectedLanguage">
+    <SelectTrigger class="text-info w-24 border-none text-sm text-blue-950 bg-white font-medium capitalize">
       <SelectValue />
     </SelectTrigger>
     <SelectContent>

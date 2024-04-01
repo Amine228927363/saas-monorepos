@@ -11,7 +11,6 @@ export class TaskServices {
     try {
       await this.prisma.task.create({
         data: {
-          id: parseInt(payload.id),
           name: payload.name,
           description: payload.description,
           processId: parseInt(payload.processId),
@@ -112,6 +111,18 @@ export class TaskServices {
       return task;
     } catch (error) {
       console.log('Error in getting the task by Id');
+    }
+  }
+  async getTasksByCustomerId(customerId: string) {
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: {
+          CustomerId: customerId,
+        },
+      });
+      return tasks;
+    } catch (error) {
+      throw new Error(`Error fetching tasks for customer ID ${customerId}`);
     }
   }
 }

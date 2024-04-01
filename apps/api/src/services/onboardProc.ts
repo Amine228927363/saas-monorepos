@@ -13,9 +13,8 @@ export class OnboardingServices {
       const onboardingProcess = await this.prisma.onboardingProcess.create({
         data: {
           step: payload.step,
-          customer: {
-            connect: { id: payload.customerid },
-          },
+          completed: false,
+          dueDate: payload.dueDate,
         },
       });
 

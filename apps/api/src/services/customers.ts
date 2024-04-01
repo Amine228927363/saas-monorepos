@@ -47,6 +47,7 @@ export class CustomersService {
         where: { id },
       });
     } catch (error) {
+      console.log(error);
       throw new Error(`Could not delete customer with ID: ${id}`);
     }
   }
@@ -62,6 +63,7 @@ export class CustomersService {
         },
       });
       if (customer) {
+        console.log('customer already exists');
         throw new Error('customer already exist');
       }
       await this.prisma.customer.create({

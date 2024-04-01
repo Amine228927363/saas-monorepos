@@ -93,7 +93,7 @@ export const registerSchema = {
       password: { type: 'string', format: 'password' },
       full_name: { type: 'string' },
     },
-    required: ['email', 'password'],
+    required: ['email', 'password', 'full_name'],
   },
   response: {
     200: {

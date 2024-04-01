@@ -8,32 +8,18 @@ export const onboardingProcessSchema = {
     step: { type: 'string' },
     completed: { type: 'boolean' },
     dueDate: { type: 'string', format: 'date-time' },
-    customers: customerSchema,
-    tasks: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          taskId: { type: 'string' },
-          taskName: { type: 'string' },
-        },
-      },
-    },
-    user: userSchema,
   },
 };
-//create onboarding process schema
+
+// create onboarding process schema
 export const createOnboardingProcessSchema = {
   body: {
     type: 'object',
-    required: ['step'],
+    required: ['step', 'completed', 'dueDate'],
     properties: {
       step: { type: 'string' },
       completed: { type: 'boolean' },
       dueDate: { type: 'string', format: 'date-time' },
-      customer: { type: 'array', items: { type: 'string' } },
-      tasks: { type: 'array', items: { type: 'string' } },
-      user: { type: 'array', items: { type: 'string' } },
     },
   },
   response: {
@@ -41,24 +27,21 @@ export const createOnboardingProcessSchema = {
       description: 'Onboarding process created successfully',
       type: 'object',
       properties: {
-        id: { type: 'integer' },
+        id: { type: 'string' },
         step: { type: 'string' },
         completed: { type: 'boolean' },
         dueDate: { type: 'string', format: 'date-time' },
-        customer: { type: 'array', items: { type: 'string' } },
-        tasks: { type: 'array', items: { type: 'string' } },
-        user: { type: 'array', items: { type: 'string' } },
       },
     },
   },
 };
 
-//update onboarding process schema
+// update onboarding process schema
 export const updateOnboardingProcessSchema = {
   params: {
     type: 'object',
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'string' },
     },
   },
   body: {
@@ -67,9 +50,34 @@ export const updateOnboardingProcessSchema = {
       step: { type: 'string' },
       completed: { type: 'boolean' },
       dueDate: { type: 'string', format: 'date-time' },
-      customer: { type: 'array', items: { type: 'string' } },
-      tasks: { type: 'array', items: { type: 'string' } },
-      user: { type: 'array', items: { type: 'string' } },
+      customers: {
+        type: 'array',
+        items: customerSchema,
+      },
+      tasks: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            assignedTo: { type: 'string' },
+            processId: { type: 'string' },
+            completed: { type: 'boolean' },
+            userId: { type: 'string' },
+          },
+        },
+      },
+      user: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'uuid' },
+          full_name: { type: 'string' },
+          email: { type: 'string', format: 'email' },
+          password: { type: 'string' },
+        },
+      },
     },
   },
   response: {
@@ -77,13 +85,64 @@ export const updateOnboardingProcessSchema = {
       description: 'Onboarding process updated successfully',
       type: 'object',
       properties: {
-        id: { type: 'integer' },
+        id: { type: 'string' },
         step: { type: 'string' },
         completed: { type: 'boolean' },
         dueDate: { type: 'string', format: 'date-time' },
-        customer: { type: 'array', items: { type: 'string' } },
-        tasks: { type: 'array', items: { type: 'string' } },
-        user: { type: 'array', items: { type: 'string' } },
+        customers: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              email: { type: 'string', format: 'email' },
+              name: { type: 'string' },
+              status: { type: 'string' },
+              organization: { type: 'string' },
+              tasks: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    taskId: { type: 'string' },
+                    taskName: { type: 'string' },
+                  },
+                },
+              },
+              user: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  email: { type: 'string', format: 'email' },
+                  full_name: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        tasks: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', format: 'uuid' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              assignedTo: { type: 'string' },
+              processId: { type: 'string' },
+              completed: { type: 'boolean' },
+              userId: { type: 'string' },
+            },
+          },
+        },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            full_name: { type: 'string' },
+            email: { type: 'string', format: 'email' },
+            password: { type: 'string' },
+          },
+        },
       },
     },
   },

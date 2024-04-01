@@ -18,7 +18,7 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     async (request, reply) => {
       try {
         const onboard = await onboardService.createOnboardProc(request.body);
-        return reply.send('onboardin cretaed sucessfully ');
+        return reply.send('onboarding process created sucessfully ');
       } catch (err) {
         reply.status(400).send('error creating onboarding process');
       }

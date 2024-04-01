@@ -35,7 +35,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 <template>
   <public-view>
     <div class="flex w-full items-center justify-center">
-      <form class="max-w-xs" @submit.prevent="onSubmit">
+      <form class="bg-white px-10 py-8 rounded-xl w-screen shadow-xl max-w-sm" @submit.prevent="onSubmit">
         <div class="w-full max-w-xs self-center pb-11 text-center">
           <h1 class="pb-2 text-4xl font-extrabold">{{ t('sign_in') }}</h1>
           <p class="font- text-muted-foreground pb-2 text-sm">{{ t('login_text') }}</p>
@@ -69,7 +69,8 @@ const onSubmit = form.handleSubmit(async (values) => {
             class="text-info text-sm font-semibold hover:underline"
             >{{ t('did_you_forget_password') }}</router-link
           >
-          <Button :disabled="isLoading">
+          <Button :disabled="isLoading" class="bg-gradient-to-tr from-blue-600 to-red-400 hover:to-red-700 text-indigo-100 py-2
+           rounded-md text-lg tracking-wide transition duration-1000">
             <LoaderSpinner v-if="isLoading" class="mr-2 size-4 animate-spin" />
             <span>{{ t('sign_in') }}</span>
           </Button>

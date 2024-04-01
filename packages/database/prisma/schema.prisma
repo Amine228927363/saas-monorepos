@@ -29,16 +29,16 @@ model Customer {
   id                  String             @id @default(cuid())
   name                String
   email               String             @unique
-  status String
+  status              String
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
   organizationId      String?
   organization        Organization?      @relation(fields: [organizationId], references: [id])
-  onboardingProcessID Int?
+  onboardingProcessID Int?               @unique
   onboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessID], references: [id])
   TaskKeepBy          String?
   user                User?              @relation(fields: [TaskKeepBy], references: [id])
-  tasks               Task?
+  tasks               Task[]
 }
 
 model Organization {
@@ -69,14 +69,14 @@ model OnboardingProcess {
 }
 
 model Task {
-  id          Int               @id
+  id          Int                @id @default(autoincrement())
   name        String
   description String?
-  processId   Int
+  processId   Int?
   assignedTo  String?
-  onboarding  OnboardingProcess @relation(fields: [processId], references: [id])
-  user        User?             @relation(fields: [assignedTo], references: [id])
-  CustomerId  String?           @unique
-  customer    Customer?         @relation(fields: [CustomerId], references: [id])
-  completed   Boolean           @default(false)
+  onboarding  OnboardingProcess? @relation(fields: [processId], references: [id])
+  user        User?              @relation(fields: [assignedTo], references: [id])
+  CustomerId  String?
+  customer    Customer?          @relation(fields: [CustomerId], references: [id])
+  completed   Boolean            @default(false)
 }

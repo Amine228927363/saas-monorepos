@@ -5,7 +5,8 @@
     data-twe-input-group-ref>
     <input
       type="search"
-      class="peer block  w-full rounded border-0px-3 py-[0.32rem] bg-slate-400 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+      v-model="searchTerm"
+      class="peer block  w-full rounded border-0px-3 py-[0.32rem]  leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
       placeholder="Search"
       aria-label="Search"
       id="search-input"
@@ -16,7 +17,8 @@
       >Search
     </label>
     <button
-      class="relative z-[2] -ms-0.5 flex items-center rounded-e bg-gray-800 px-5  text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+    @click="search"
+      class="relative z-[2] -ms-0.5 translate-x-4 flex items-center rounded-e bg-gray-800 px-5  text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
       type="button"
       id="search-button"
       data-twe-ripple-init
@@ -37,6 +39,32 @@
     </button>
   </div>
 </template>
-<script setup >
+<script  lang="ts">
+import { ref, watch, getCurrentInstance } from 'vue';
 
+export default {
+  setup() {
+    const searchTerm = ref('');
+
+    const instance = getCurrentInstance();
+    if (!instance) {
+      throw new Error('Unable to get component instance.');
+    }
+
+    const search = () => {
+      instance.emit('search', searchTerm.value);
+      console.log(searchTerm.value);
+    };
+
+    watch(searchTerm, () => {
+      instance.emit('update:searchTerm', searchTerm.value);
+    });
+
+    return {
+      searchTerm,
+      search
+    };
+  },
+};
 </script>
+

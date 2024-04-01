@@ -26,22 +26,21 @@ export const createCustomerSchema = {
       name: { type: 'string' },
       status: { type: 'string' },
       organization: { type: 'string' },
+      onboardingProcessID: { type: 'number' },
+      TaskKeepBy: { type: 'string' }, //userid who keep the task for this customer
       tasks: {
         type: 'array',
         items: {
           type: 'object',
           properties: {
-            taskId: { type: 'string' },
-            taskName: { type: 'string' },
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            assignedTo: { type: 'string' },
+            processId: { type: 'string' },
+            completed: { type: 'boolean' },
+            userId: { type: 'string' },
           },
-        },
-      },
-      user: {
-        type: 'object',
-        properties: {
-          id: { type: 'string' },
-          email: { type: 'string', format: 'email' },
-          full_name: { type: 'string' },
         },
       },
     },
@@ -54,31 +53,22 @@ export const createCustomerSchema = {
         email: { type: 'string', format: 'email' },
         name: { type: 'string' },
         status: { type: 'string' },
-        organizationId: { type: 'string' },
+        organization: { type: 'string' },
+        onboardingProcessID: { type: 'number' },
+        TaskKeepBy: { type: 'string' }, //userid who keep the task for this customer
         tasks: {
           type: 'array',
           items: {
             type: 'object',
             properties: {
-              taskId: { type: 'string' },
-              taskName: { type: 'string' },
-              user: {
-                type: 'object',
-                properties: {
-                  id: { type: 'string' },
-                  email: { type: 'string', format: 'email' },
-                  full_name: { type: 'string' },
-                },
-              },
+              id: { type: 'string', format: 'uuid' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              assignedTo: { type: 'string' },
+              processId: { type: 'string' },
+              completed: { type: 'boolean' },
+              userId: { type: 'string' },
             },
-          },
-        },
-        user: {
-          type: 'object',
-          properties: {
-            id: { type: 'string' },
-            email: { type: 'string', format: 'email' },
-            full_name: { type: 'string' },
           },
         },
       },
@@ -156,7 +146,7 @@ export const getCustomerByIdSchema = {
   params: {
     type: 'object',
     properties: {
-      customerId: { type: 'string' },
+      id: { type: 'string' },
     },
   },
   response: {
@@ -267,9 +257,9 @@ export const deleteCustomerSchema = {
   params: {
     type: 'object',
     properties: {
-      customerId: { type: 'string' },
+      id: { type: 'string' },
     },
-    required: ['customerId'],
+    required: ['id'],
   },
   response: {
     200: {

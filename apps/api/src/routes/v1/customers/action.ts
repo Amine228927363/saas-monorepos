@@ -46,6 +46,7 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return reply.status(200).send(customer);
       } catch (error) {
         fastify.log.error(error);
+        console.log(error);
         return reply.status(500).send('Internal Server Error');
       }
     },

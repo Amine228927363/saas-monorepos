@@ -3,7 +3,7 @@ export type LoginBody = {
   password: string
 }
 export type RegisterBody = {
-  Fullname: string
+  full_name: string
   email: string
   password: string
 }

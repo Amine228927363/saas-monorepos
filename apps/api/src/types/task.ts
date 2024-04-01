@@ -1,11 +1,10 @@
 export interface createTaskPayload {
-  id: string;
+  id: number;
   name: string;
   description: string;
   processId: string;
   assignedTo: string;
   CustomerId: string;
-  completed: boolean;
 }
 export interface DeleteTaskPayload {
   taskId: string;

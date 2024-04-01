@@ -40,9 +40,9 @@ import {Plus } from 'lucide-vue-next'
 </script>
 
 <template>
-  <header class="container bg-red-400 absolute z-20 hidden py-6 md:block">
+  <header class="container  absolute z-20 hidden py-6 md:block">
     <nav class="flex w-full items-center justify-between">
-      <div class="flex fixed items-center bg-green-400 gap-5 right-0">
+      <div class="flex fixed items-center  gap-5 right-0">
         <BellRingIcon class="text-muted-foreground" />
         <DropdownMenu>
           <DropdownMenuTrigger as-child>

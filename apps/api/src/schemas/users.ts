@@ -2,7 +2,7 @@ export const userSchema = {
   type: 'object',
   properties: {
     id: { type: 'string', format: 'uuid' },
-    fullName: { type: 'string' },
+    full_name: { type: 'string' },
     email: { type: 'string', format: 'email' },
     password: { type: 'string' },
   },

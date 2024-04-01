@@ -9,28 +9,25 @@ import { LoginPayload, RegisterPayload, ResetPayload } from '../../../types/auth
 const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { prisma } = fastify;
   const authService = new AuthenticationService({ prisma });
-  fastify.get('/', async (request, reply) => {
-    reply.send('Hello World');
-  }),
-    fastify.post<{ Body: LoginPayload }>(
-      '/login',
-      {
-        schema: loginSchema,
-      },
-      async (request, reply) => {
-        try {
-          const data = await authService.login(request.body);
+  fastify.post<{ Body: LoginPayload }>(
+    '/login',
+    {
+      schema: loginSchema,
+    },
+    async (request, reply) => {
+      try {
+        const data = await authService.login(request.body);
 
-          // Generating Token
-          return reply.code(200).send({
-            access_token: data.accessToken,
-            user: _.omit(data.user, ['password']),
-          });
-        } catch (err) {
-          throw err;
-        }
-      },
-    );
+        // Generating Token
+        return reply.code(200).send({
+          access_token: data.accessToken,
+          user: _.omit(data.user, ['password']),
+        });
+      } catch (err) {
+        throw err;
+      }
+    },
+  );
   fastify.post<{ Body: RegisterPayload }>(
     '/register',
     {

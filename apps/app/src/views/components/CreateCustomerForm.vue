@@ -31,7 +31,7 @@
           <input
             type="text"
             id="oganization"
-            v-model="newCustomer.org"
+            v-model="newCustomer.organization"
             placeholder="Enter organization Name"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
@@ -60,12 +60,13 @@
 
 </template>
 
-<script lang="ts" >
+<script  lang="ts" >
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ref} from 'vue';
 import { toggleCustomerForm } from '@/utils/toggleCustomerForm';
 import {useCustomerStore} from '@/stores/customer'
-
+import type { Customer } from '@/types/customer';
+import { defineProps,defineEmits } from 'vue';
 export default {
   components: {
     Card,
@@ -77,23 +78,22 @@ export default {
   },
   setup() {
     const custStore= useCustomerStore();
-    const { showCustomerForm, toggleForm } = toggleCustomerForm();
-    const newCustomer  =ref({
+
+    const newCustomer=ref({
      name:'',
      email:'',
-     org:'',
-     status:''
+     organization:'',
+     status:'New'
+
 })
 const handleSubmit = () =>{
   custStore.createCustomer(newCustomer.value)
-  newCustomer.value = { customerName: '', customerEmail: '', OrgName: '' ,status: '' };
-  console.log('Customer created')
+  newCustomer.value = { name: '',email: '', organization: '' ,status: 'New' };
+ 
 }
   
     return {
       newCustomer,
-      handleSubmit,
-  
     };
   },
 };

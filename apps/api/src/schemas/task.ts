@@ -1,7 +1,7 @@
 export const taskSchema = {
   type: 'object',
   properties: {
-    id: { type: 'string', format: 'uuid' },
+    id: { type: 'integer' },
     name: { type: 'string' },
     description: { type: 'string' },
     assignedTo: { type: 'string' },
@@ -16,22 +16,22 @@ export const createTaskSchema = {
   tags: ['tasks'],
   body: {
     type: 'object',
-    required: ['name', 'processId'],
+
     properties: {
       name: { type: 'string' },
       description: { type: 'string' },
       processId: { type: 'integer' },
       assignedTo: { type: 'string' },
-      customerId: { type: 'string' },
-      completed: { type: 'boolean' },
+      CustomerId: { type: 'string' },
     },
+    required: ['name', 'processId'],
   },
   response: {
     201: {
       description: 'Task created successfully',
       type: 'object',
       properties: {
-        id: { type: 'integer' },
+        id: { type: 'number' },
         name: { type: 'string' },
         description: { type: 'string' },
         processId: { type: 'integer' },
@@ -74,7 +74,7 @@ export const updateTaskSchema = {
       description: { type: 'string' },
       processId: { type: 'integer' },
       assignedTo: { type: 'string' },
-      customerId: { type: 'string' },
+      CustomerId: { type: 'string' },
       completed: { type: 'boolean' },
     },
   },
@@ -88,7 +88,7 @@ export const updateTaskSchema = {
         description: { type: 'string' },
         processId: { type: 'integer' },
         assignedTo: { type: 'string' },
-        customerId: { type: 'string' },
+        CustomerId: { type: 'string' },
         completed: { type: 'boolean' },
       },
     },
@@ -116,7 +116,7 @@ export const deleteTaskSchema = {
   params: {
     type: 'object',
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'number' },
     },
   },
   response: {
@@ -143,6 +143,82 @@ export const deleteTaskSchema = {
       status: { type: 'number', default: 500 },
       code: { type: 'string' },
       message: { type: 'string' },
+    },
+  },
+};
+//get all tasks
+export const getAllTaskSchema = {
+  response: {
+    200: {
+      description: 'Successful response with an array of tasks',
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'number' },
+          name: { type: 'string' },
+          description: { type: 'string' },
+          processId: { type: 'integer' },
+          assignedTo: { type: 'string' },
+          CustomerId: { type: 'string' },
+          completed: { type: 'boolean' },
+        },
+      },
+    },
+    404: {
+      description: 'No tasks found',
+      type: 'object',
+      properties: {
+        message: { type: 'string', default: 'No tasks found' },
+      },
+    },
+    500: {
+      description: 'Internal Server Error',
+      type: 'object',
+      properties: {
+        message: { type: 'string', default: 'Internal Server Error' },
+      },
+    },
+  },
+};
+// getTaskByCustomerId schema
+export const getTaskByCustomerIdSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      CustomerId: { type: 'string' },
+    },
+  },
+  response: {
+    200: {
+      description: 'Successful response with tasks for a specific customer',
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'number' },
+          name: { type: 'string' },
+          description: { type: 'string' },
+          processId: { type: 'integer' },
+          assignedTo: { type: 'string' },
+          CustomerId: { type: 'string' },
+          completed: { type: 'boolean' },
+        },
+      },
+    },
+    404: {
+      description: 'No tasks found for the given customer',
+      type: 'object',
+      properties: {
+        message: { type: 'string', default: 'No tasks found for the given customer' },
+      },
+    },
+    500: {
+      description: 'Internal Server Error',
+      type: 'object',
+      properties: {
+        message: { type: 'string', default: 'Internal Server Error' },
+      },
     },
   },
 };
