@@ -55,6 +55,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3",
     "tailwindcss-animate": "^1.0.7",
+    "typeface-roboto": "^1.1.13",
     "vue-smooth-dnd": "^0.8.1"
   }
 }

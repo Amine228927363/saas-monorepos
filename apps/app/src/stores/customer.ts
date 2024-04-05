@@ -9,20 +9,41 @@ export const useCustomerStore = defineStore({
     isLoading: false,
     error: null as ServerError | null
   }),
+  getters: {
+    totalCustomers(): number {
+      return this.customers.length
+    },
+    customersByStatus(): Record<string, Customer[]> {
+      const customersByStatus: Record<string, Customer[]> = {}
+      this.customers.forEach((customer) => {
+        if (!customersByStatus[customer.status]) {
+          customersByStatus[customer.status] = []
+        }
+        customersByStatus[customer.status].push(customer)
+      })
+
+      return customersByStatus
+    },
+    loading(): boolean {
+      return this.isLoading
+    }
+  },
   actions: {
-    //vreate customer functon
+    //create customer functon
     async createCustomer(newCustomer: Customer) {
       this.isLoading = true
       try {
         const res = await api.post('/customers/createCustomer', newCustomer)
-        this.customers.push(res.data.customer)
+        this.customers.push(res.data)
       } catch (err: any) {
+        console.log(err)
         this.error = err?.response?.data
       }
       this.isLoading = false
     },
     //get customers
     async getCustomers() {
+      this.isLoading = true
       try {
         const response = await api.get('/customers/allCustomers')
         this.customers = response.data
@@ -30,12 +51,16 @@ export const useCustomerStore = defineStore({
       } catch (error) {
         console.error('Error fetching customers:', error)
         throw new Error('Unable to fetch customers')
+      } finally {
+        this.isLoading = false
       }
-      this.isLoading = false
     },
-    async updateCustomer(id: string, newStatus: string) {
+    async updateCustomer(id: string, newStatus: string, processId: number) {
       try {
-        const response = await api.put(`/customers/updateCustomer/${id}`, { status: newStatus })
+        const response = await api.put(`/customers/updateCustomer/${id}`, {
+          status: newStatus,
+          onboardingProcessID: processId
+        })
         return response.data
       } catch (error) {
         console.error('Error updating customer:', error)
@@ -53,11 +78,14 @@ export const useCustomerStore = defineStore({
     },
     async getCustomerById(id: string) {
       try {
-        let res = await api.get(`/customers/customer/${id}`)
-        if (!res.data) throw new Error('No Customer Found')
-        return res.data
+        const res = await api.get(`/customers/customer/${id}`)
+        if (!res.data) {
+          throw new Error('No Customer Found')
+        }
+        return res
       } catch (err) {
-        console.log(err)
+        console.error('Error fetching customer:', err)
+        throw err
       }
     }
   }

@@ -1,11 +1,14 @@
 import { Task } from '@saas-monorepo/database';
 
+import { onboardingProc } from './onboardingProcess.js';
+
 export interface updateCustomerPayload {
   id: string;
   email: string;
   name: string;
   status: string;
   organizationid?: string;
+  onboardingProcessID?: number;
   userId?: string;
   task?: Task[];
 }
@@ -14,4 +17,5 @@ export interface createCustomerPayload {
   name: string;
   status: string;
   organizationid?: string;
+  onboardingProcess: onboardingProc;
 }

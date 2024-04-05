@@ -20,7 +20,6 @@ export const useUserStore = defineStore({
       this.isLoading = true
       try {
         const res = await api.get('/users/me')
-
         this.currentUser = res.data.user
       } catch (err: any) {
         this.error = err?.response?.data

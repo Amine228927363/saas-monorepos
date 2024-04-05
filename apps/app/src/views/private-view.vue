@@ -34,7 +34,9 @@ useHead({
 </script>
 
 <template>
-  <div class="flex h-screen w-full  overflow-hidden">
+ 
+  <div class="flex h-screen w-full bg-cover bg-center  relative  overflow-hidden">
+    
     <SideBar></SideBar>
     <div class="flex w-full flex-col">
       <Header></Header>

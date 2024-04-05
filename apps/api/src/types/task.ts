@@ -1,22 +1,18 @@
 export interface createTaskPayload {
-  id: number;
   name: string;
   description: string;
   processId: string;
-  assignedTo: string;
   CustomerId: string;
+  status: Status;
+  dueDate: Date;
 }
 export interface DeleteTaskPayload {
   taskId: string;
   customerId: string;
 }
-
+export type Status = 'ToDo' | 'InProgress' | 'Done';
 export interface UpdateTaskPayload {
-  taskId: string;
   name?: string;
   description?: string;
-  processId?: string;
-  assignedTo?: string;
-  customerId?: string;
-  completed?: boolean;
+  status?: Status | undefined;
 }

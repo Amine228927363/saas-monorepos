@@ -91,14 +91,9 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     { schema: deleteCustomerSchema },
     async (request, reply) => {
       const customerId = request.params.id;
-
-      if (!customerId) {
-        return reply.status(400).send('Invalid id');
-      }
-
       try {
         await customersService.deleteCustomer(customerId);
-        return reply.status(204).send(`Customer with the id ${customerId} was deleted`);
+        return reply.send(`Customer with the id ${customerId} was deleted`);
       } catch (error) {
         fastify.log.error(error);
         return reply.status(500).send('Internal Server Error');

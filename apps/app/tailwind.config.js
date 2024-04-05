@@ -99,7 +99,8 @@ module.exports = {
         'collapsible-up': 'collapsible-up 0.2s ease-in-out'
       },
       fontFamily: {
-        inter: ['Inter', fontFamily.sans]
+        inter: ['Inter', fontFamily.sans],
+        sans: ['Roboto', 'sans-serif']
       }
     }
   },

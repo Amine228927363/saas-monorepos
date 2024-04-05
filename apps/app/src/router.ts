@@ -12,6 +12,7 @@ import RegisterRoute from './routes/register/RegisterRoute.vue'
 import ForgotRoute from '@/routes/forgot/forgot-route.vue'
 import ResetRoute from '@/routes/reset/reset-route.vue'
 import PrivateNotFoundRoute from '@/routes/private-not-found-route.vue'
+import CreateTask from '@/views/components/CreateTask.vue'
 import { useUserStore } from '@/stores/user'
 const defaultRoutes: RouteRecordRaw[] = [
   {
@@ -70,6 +71,14 @@ const defaultRoutes: RouteRecordRaw[] = [
     name: 'task-view',
     path: '/task',
     component: TaskView,
+    meta: {
+      public: true
+    }
+  },
+  {
+    name: 'createTask',
+    path: '/Createtask',
+    component: CreateTask,
     meta: {
       public: true
     }

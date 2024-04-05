@@ -1,4 +1,4 @@
-import { PrismaClient } from '@saas-monorepo/database';
+import { PrismaClient, Status } from '@saas-monorepo/database';
 import { AbstractServiceOptions } from 'src/types/services.js';
 import { UpdateTaskPayload, createTaskPayload } from 'src/types/task.js';
 
@@ -14,9 +14,9 @@ export class TaskServices {
           name: payload.name,
           description: payload.description,
           processId: parseInt(payload.processId),
-          assignedTo: payload.assignedTo,
           CustomerId: payload.CustomerId,
-          completed: false,
+          status: payload.status,
+          dueDate: payload.dueDate,
         },
       });
       return 'Task Created Successfully';
@@ -31,7 +31,6 @@ export class TaskServices {
       const task = await this.prisma.task.findUnique({
         where: { id },
       });
-
       if (!task) {
         throw new Error(`Task with ID ${id} not found`);
       }
@@ -39,10 +38,7 @@ export class TaskServices {
       const updatedTaskData: {
         name?: string;
         description?: string;
-        completed?: boolean;
-        assignedTo?: string;
-        processId?: number;
-        CustomerId?: string;
+        status?: Status;
       } = {};
 
       if (payload.name) {
@@ -51,19 +47,9 @@ export class TaskServices {
       if (payload.description) {
         updatedTaskData.description = payload.description;
       }
-      if (payload.completed !== undefined) {
-        updatedTaskData.completed = payload.completed;
+      if (payload.status) {
+        updatedTaskData.status = payload.status;
       }
-      if (payload.assignedTo) {
-        updatedTaskData.assignedTo = payload.assignedTo;
-      }
-      if (payload.processId !== undefined) {
-        updatedTaskData.processId = parseInt(payload.processId);
-      }
-      if (payload.customerId) {
-        updatedTaskData.CustomerId = payload.customerId;
-      }
-
       const updatedTask = await this.prisma.task.update({
         where: { id },
         data: updatedTaskData,
@@ -94,6 +80,7 @@ export class TaskServices {
       throw new Error(`Could not delete task with ID: ${id}`);
     }
   }
+  //getall tasks
   async getAllTasks() {
     try {
       let tasks = await this.prisma.task.findMany();

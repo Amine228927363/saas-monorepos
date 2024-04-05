@@ -33,15 +33,21 @@ export class CustomersService {
     try {
       const updatedCustomer = await this.prisma.customer.update({
         where: { id },
-        data: customerData,
+        data: {
+          name: customerData.name,
+          email: customerData.email,
+          status: customerData.status,
+          onboardingProcessID: customerData.onboardingProcessID,
+        },
       });
       return updatedCustomer;
     } catch (error) {
+      console.log(error);
       throw new Error(`Could not update customer with ID: ${id}`);
     }
   }
 
-  async deleteCustomer(id: string): Promise<void> {
+  async deleteCustomer(id: string) {
     try {
       await this.prisma.customer.delete({
         where: { id },
@@ -53,6 +59,9 @@ export class CustomersService {
   }
   async createCustomer(payload: createCustomerPayload) {
     try {
+      if (!payload.email) {
+        throw new Error('Email is required');
+      }
       let customer = await this.prisma.customer.findUnique({
         where: { email: payload.email.toLowerCase() },
         select: {
@@ -66,14 +75,20 @@ export class CustomersService {
         console.log('customer already exists');
         throw new Error('customer already exist');
       }
-      await this.prisma.customer.create({
+      const process = await this.prisma.onboardingProcess.findFirst({
+        where: { step: payload.status },
+      });
+      const processId = process.id;
+      const newCustomer = await this.prisma.customer.create({
         data: {
           email: payload.email,
           name: payload.name,
           status: payload.status,
           organizationId: payload.organizationid,
+          onboardingProcess: { connect: { id: processId } },
         },
       });
+      return newCustomer;
     } catch (error) {
       console.log(error);
       throw new Error();

@@ -1,7 +1,13 @@
 import { FastifyPluginAsync } from 'fastify';
-import { createTaskSchema, getAllTaskSchema, getTaskByCustomerIdSchema } from 'src/schemas/task.js';
+import {
+  createTaskSchema,
+  deleteTaskSchema,
+  getAllTaskSchema,
+  getTaskByCustomerIdSchema,
+  updateTaskSchema,
+} from 'src/schemas/task.js';
 import TaskServices from 'src/services/task.js';
-import { createTaskPayload } from 'src/types/task.js';
+import { UpdateTaskPayload, createTaskPayload } from 'src/types/task.js';
 
 const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { prisma } = fastify;
@@ -30,6 +36,42 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const { customerId } = req.params;
       const tasks = await TaskService.getTasksByCustomerId(customerId);
       return tasks;
+    },
+  );
+  //update task
+  fastify.put<{ Params: { id: number }; Body: UpdateTaskPayload }>(
+    '/updateTask/:id',
+    { schema: updateTaskSchema },
+    async (request, reply) => {
+      const { id } = request.params;
+      const { body } = request;
+      try {
+        const updatedTask = await TaskService.updateTaskById(id, body);
+        if (!updatedTask) {
+          return reply.status(404).send({ message: 'Task not found' });
+        }
+        return reply.send({ message: 'Task updated successfully', task: updatedTask });
+      } catch (error) {
+        console.log(error);
+        return reply.status(500).send({ message: 'Error updating task' });
+      }
+    },
+  );
+  fastify.delete<{ Params: { id: number } }>(
+    '/deleteTask/:id',
+    { schema: deleteTaskSchema },
+    async (request, reply) => {
+      const { id } = request.params;
+      try {
+        const deletedTask = await TaskService.deleteTaskById(id);
+        if (!deletedTask) {
+          return reply.status(404).send({ message: 'Task not found' });
+        }
+        return reply.send({ message: 'Task deleted successfully' });
+      } catch (error) {
+        console.log(error);
+        return reply.status(500).send({ message: 'Error deleting task' });
+      }
     },
   );
 };

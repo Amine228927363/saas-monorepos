@@ -20,7 +20,7 @@
     </Table>
   </template>
   
-  <script setup lang="ts">
+  <script setup >
   import {
     Table,
     TableBody,

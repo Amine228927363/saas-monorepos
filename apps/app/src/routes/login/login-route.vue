@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Loader2 as LoaderSpinner } from 'lucide-vue-next'
+import { User } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
@@ -69,7 +70,7 @@ const onSubmit = form.handleSubmit(async (values) => {
             class="text-info text-sm font-semibold hover:underline"
             >{{ t('did_you_forget_password') }}</router-link
           >
-          <Button :disabled="isLoading" class="bg-gradient-to-tr from-blue-600 to-red-400 hover:to-red-700 text-indigo-100 py-2
+          <Button :disabled="isLoading" class="bg-blue-500 text-indigo-100 py-2
            rounded-md text-lg tracking-wide transition duration-1000">
             <LoaderSpinner v-if="isLoading" class="mr-2 size-4 animate-spin" />
             <span>{{ t('sign_in') }}</span>

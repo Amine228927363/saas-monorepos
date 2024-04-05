@@ -23,7 +23,7 @@
       @mouseleave="showDeleteText = false"
       
       >
-        <Trash color="red"></Trash>
+        <Trash color="red" size="18"></Trash>
         <span class="absolute top-0 left-0 w-12 bg-gray-100 text-gray-600 text-xs rounded-md py-1 px-2 mt-8 opacity-0 transition-opacity duration-300"
         :class="{ 'opacity-100': showDeleteText }"> Delete</span>
       </button>
@@ -54,9 +54,10 @@
   
   const deleteCustomer = async (id) => {
     if (!window.confirm("Are you sure you want to delete this customer?")) return;
-  
     try {
       customerStore.deleteCustomer(id);
+      console.log('deleted successfully')
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting customer:', error.message);
     }

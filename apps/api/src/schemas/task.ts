@@ -1,43 +1,48 @@
+enum Status {
+  ToDo = 'ToDo',
+  InProgress = 'InProgress',
+  Done = 'Done',
+}
 export const taskSchema = {
   type: 'object',
   properties: {
     id: { type: 'integer' },
     name: { type: 'string' },
-    description: { type: 'string' },
-    assignedTo: { type: 'string' },
-    processId: { type: 'string' },
-    completed: { type: 'boolean' },
-    userId: { type: 'string' },
+    description: { type: ['string', 'null'] },
+    processId: { type: ['integer', 'null'] },
+    CustomerId: { type: ['string', 'null'] },
+    status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
+    dueDate: { type: 'string', format: 'date-time' },
   },
-  required: ['name', 'description', 'userId'],
+  required: ['name', 'status', 'dueDate'],
 };
-//create task schema
+
 export const createTaskSchema = {
   tags: ['tasks'],
   body: {
     type: 'object',
-
     properties: {
       name: { type: 'string' },
       description: { type: 'string' },
       processId: { type: 'integer' },
-      assignedTo: { type: 'string' },
       CustomerId: { type: 'string' },
+      status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
+      dueDate: { type: 'string', format: 'date-time' },
     },
-    required: ['name', 'processId'],
+    required: ['name', 'processId', 'CustomerId'],
   },
   response: {
     201: {
       description: 'Task created successfully',
       type: 'object',
       properties: {
-        id: { type: 'number' },
+        id: { type: 'integer' },
         name: { type: 'string' },
         description: { type: 'string' },
         processId: { type: 'integer' },
-        assignedTo: { type: 'string' },
-        customerId: { type: 'string' },
-        completed: { type: 'boolean' },
+        CustomerId: { type: 'string' },
+        status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
+        dueDate: { type: 'string', format: 'date-time' },
       },
     },
   },
@@ -59,7 +64,7 @@ export const createTaskSchema = {
     },
   },
 };
-//update task by id
+
 export const updateTaskSchema = {
   params: {
     type: 'object',
@@ -72,10 +77,7 @@ export const updateTaskSchema = {
     properties: {
       name: { type: 'string' },
       description: { type: 'string' },
-      processId: { type: 'integer' },
-      assignedTo: { type: 'string' },
-      CustomerId: { type: 'string' },
-      completed: { type: 'boolean' },
+      status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
     },
   },
   response: {
@@ -87,9 +89,9 @@ export const updateTaskSchema = {
         name: { type: 'string' },
         description: { type: 'string' },
         processId: { type: 'integer' },
-        assignedTo: { type: 'string' },
         CustomerId: { type: 'string' },
-        completed: { type: 'boolean' },
+        status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
+        dueDate: { type: 'string', format: 'date-time' },
       },
     },
   },
@@ -111,7 +113,7 @@ export const updateTaskSchema = {
     },
   },
 };
-//delete task
+
 export const deleteTaskSchema = {
   params: {
     type: 'object',
@@ -146,7 +148,7 @@ export const deleteTaskSchema = {
     },
   },
 };
-//get all tasks
+
 export const getAllTaskSchema = {
   response: {
     200: {
@@ -155,13 +157,13 @@ export const getAllTaskSchema = {
       items: {
         type: 'object',
         properties: {
-          id: { type: 'number' },
+          id: { type: 'integer' },
           name: { type: 'string' },
           description: { type: 'string' },
           processId: { type: 'integer' },
-          assignedTo: { type: 'string' },
           CustomerId: { type: 'string' },
-          completed: { type: 'boolean' },
+          status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
+          dueDate: { type: 'string', format: 'date-time' },
         },
       },
     },
@@ -181,7 +183,7 @@ export const getAllTaskSchema = {
     },
   },
 };
-// getTaskByCustomerId schema
+
 export const getTaskByCustomerIdSchema = {
   params: {
     type: 'object',
@@ -196,13 +198,13 @@ export const getTaskByCustomerIdSchema = {
       items: {
         type: 'object',
         properties: {
-          id: { type: 'number' },
+          id: { type: 'integer' },
           name: { type: 'string' },
           description: { type: 'string' },
           processId: { type: 'integer' },
-          assignedTo: { type: 'string' },
           CustomerId: { type: 'string' },
-          completed: { type: 'boolean' },
+          status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
+          dueDate: { type: 'string', format: 'date-time' },
         },
       },
     },

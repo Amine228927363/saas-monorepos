@@ -1,13 +1,10 @@
-import { customerSchema } from './customer.js';
-import { userSchema } from './users.js';
+import { taskSchema } from './task.js';
 
 export const onboardingProcessSchema = {
   type: 'object',
   properties: {
     id: { type: 'string' },
     step: { type: 'string' },
-    completed: { type: 'boolean' },
-    dueDate: { type: 'string', format: 'date-time' },
   },
 };
 
@@ -15,11 +12,8 @@ export const onboardingProcessSchema = {
 export const createOnboardingProcessSchema = {
   body: {
     type: 'object',
-    required: ['step', 'completed', 'dueDate'],
     properties: {
       step: { type: 'string' },
-      completed: { type: 'boolean' },
-      dueDate: { type: 'string', format: 'date-time' },
     },
   },
   response: {
@@ -27,10 +21,8 @@ export const createOnboardingProcessSchema = {
       description: 'Onboarding process created successfully',
       type: 'object',
       properties: {
-        id: { type: 'string' },
+        id: { type: 'number' },
         step: { type: 'string' },
-        completed: { type: 'boolean' },
-        dueDate: { type: 'string', format: 'date-time' },
       },
     },
   },
@@ -48,36 +40,6 @@ export const updateOnboardingProcessSchema = {
     type: 'object',
     properties: {
       step: { type: 'string' },
-      completed: { type: 'boolean' },
-      dueDate: { type: 'string', format: 'date-time' },
-      customers: {
-        type: 'array',
-        items: customerSchema,
-      },
-      tasks: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            description: { type: 'string' },
-            assignedTo: { type: 'string' },
-            processId: { type: 'string' },
-            completed: { type: 'boolean' },
-            userId: { type: 'string' },
-          },
-        },
-      },
-      user: {
-        type: 'object',
-        properties: {
-          id: { type: 'string', format: 'uuid' },
-          full_name: { type: 'string' },
-          email: { type: 'string', format: 'email' },
-          password: { type: 'string' },
-        },
-      },
     },
   },
   response: {
@@ -87,62 +49,98 @@ export const updateOnboardingProcessSchema = {
       properties: {
         id: { type: 'string' },
         step: { type: 'string' },
-        completed: { type: 'boolean' },
-        dueDate: { type: 'string', format: 'date-time' },
-        customers: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              email: { type: 'string', format: 'email' },
-              name: { type: 'string' },
-              status: { type: 'string' },
-              organization: { type: 'string' },
-              tasks: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    taskId: { type: 'string' },
-                    taskName: { type: 'string' },
-                  },
-                },
-              },
-              user: {
-                type: 'object',
-                properties: {
-                  id: { type: 'string' },
-                  email: { type: 'string', format: 'email' },
-                  full_name: { type: 'string' },
-                },
-              },
-            },
-          },
+      },
+    },
+  },
+};
+
+export const getAllOnboardsSchema = {
+  response: {
+    200: {
+      description: 'Get all onboarding processes successfully',
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          step: { type: 'string' },
         },
-        tasks: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string', format: 'uuid' },
-              name: { type: 'string' },
-              description: { type: 'string' },
-              assignedTo: { type: 'string' },
-              processId: { type: 'string' },
-              completed: { type: 'boolean' },
-              userId: { type: 'string' },
-            },
-          },
-        },
-        user: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', format: 'uuid' },
-            full_name: { type: 'string' },
-            email: { type: 'string', format: 'email' },
-            password: { type: 'string' },
-          },
-        },
+      },
+    },
+  },
+};
+
+export const deleteOnboardSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+    },
+  },
+  response: {
+    200: {
+      description: 'Onboarding process deleted successfully',
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        step: { type: 'string' },
+      },
+    },
+    404: {
+      description: 'Onboarding process not found',
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+      },
+    },
+  },
+};
+export const getOnboardingProcessByIdSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+    },
+  },
+  response: {
+    200: {
+      description: 'Onboarding process found',
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        step: { type: 'string' },
+      },
+    },
+    404: {
+      description: 'Onboarding process not found',
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+      },
+    },
+  },
+};
+export const getOnboardingProcessByStepSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      step: { type: 'string' },
+    },
+  },
+  response: {
+    200: {
+      description: 'Onboarding process found',
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        step: { type: 'string' },
+      },
+    },
+    404: {
+      description: 'Onboarding process not found',
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
       },
     },
   },

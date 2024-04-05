@@ -99,8 +99,8 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (values) => {
   const { confirmPassword, ...registrationData } = values; // Exclude confirmPassword from submission
   await authStore.register(registrationData);
-  if (authStore.isAuthenticated) {
-    router.replace({ name: 'home-overview' });
-  }
+  
+    router.replace({ name: 'login' });
+  
 });
 </script>

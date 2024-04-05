@@ -1,6 +1,6 @@
 import api from '@/services/api'
 import { defineStore } from 'pinia'
-import type { task } from '@/types/task'
+import type { task, Status } from '@/types/task'
 import type { ServerError } from '@/types/server'
 
 export const useTaskStore = defineStore({
@@ -46,6 +46,31 @@ export const useTaskStore = defineStore({
       } finally {
         this.isLoading = false
       }
+    },
+    async updateTaskStatusById(taskId: number, status: string) {
+      this.isLoading = true
+      try {
+        const res = await api.put(`/tasks/updateTask/${taskId}`, { status })
+        const updatedTask = this.tasks.find((task) => task.id === taskId)
+        if (updatedTask) {
+          updatedTask.status = status
+        }
+      } catch (err: any) {
+        console.log(err)
+        this.error = err?.response?.data
+      }
+      this.isLoading = false
+    },
+    async deleteTaskById(taskId: number) {
+      this.isLoading = true
+      try {
+        const res = await api.delete(`/tasks/deleteTask/${taskId}`)
+        this.tasks = this.tasks.filter((task) => task.id !== taskId)
+      } catch (err: any) {
+        console.log(err)
+        this.error = err?.response?.data
+      }
+      this.isLoading = false
     }
   }
 })

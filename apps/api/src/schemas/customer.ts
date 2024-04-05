@@ -27,22 +27,7 @@ export const createCustomerSchema = {
       status: { type: 'string' },
       organization: { type: 'string' },
       onboardingProcessID: { type: 'number' },
-      TaskKeepBy: { type: 'string' }, //userid who keep the task for this customer
-      tasks: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', format: 'uuid' },
-            name: { type: 'string' },
-            description: { type: 'string' },
-            assignedTo: { type: 'string' },
-            processId: { type: 'string' },
-            completed: { type: 'boolean' },
-            userId: { type: 'string' },
-          },
-        },
-      },
+      TaskKeepBy: { type: 'string' },
     },
   },
   response: {
@@ -56,21 +41,6 @@ export const createCustomerSchema = {
         organization: { type: 'string' },
         onboardingProcessID: { type: 'number' },
         TaskKeepBy: { type: 'string' }, //userid who keep the task for this customer
-        tasks: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string', format: 'uuid' },
-              name: { type: 'string' },
-              description: { type: 'string' },
-              assignedTo: { type: 'string' },
-              processId: { type: 'string' },
-              completed: { type: 'boolean' },
-              userId: { type: 'string' },
-            },
-          },
-        },
       },
     },
     '4xx': {
@@ -109,6 +79,7 @@ export const getAllCustomersSchema = {
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
           organizationId: { type: 'string' },
+          onboardingProcessID: { type: 'number' },
           tasks: { type: 'array', items: { type: 'string' } },
           user: {
             type: 'object',
@@ -158,6 +129,7 @@ export const getCustomerByIdSchema = {
         name: { type: 'string' },
         status: { type: 'string' },
         organizationId: { type: 'string' },
+        onboardingProcessID: { type: 'number' },
         tasks: {
           type: 'array',
           items: {
@@ -214,6 +186,7 @@ export const updateCustomerSchema = {
       name: { type: 'string' },
       status: { type: 'string' },
       organizationId: { type: 'string' },
+      onboardingProcessID: { type: 'number' },
       user: {
         type: 'object',
         properties: {

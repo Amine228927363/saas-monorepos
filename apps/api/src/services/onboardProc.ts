@@ -10,14 +10,22 @@ export class OnboardingServices {
   }
   async createOnboardProc(payload: createOnbordProc) {
     try {
+      const existingProcess = await this.prisma.onboardingProcess.findFirst({
+        where: { step: payload.step },
+      });
+      if (existingProcess) {
+        console.error('Error creating onboarding process: Process with this name already exists');
+        throw new Error('Onboarding process with this name already exists');
+      }
       const onboardingProcess = await this.prisma.onboardingProcess.create({
         data: {
           step: payload.step,
-          completed: false,
-          dueDate: payload.dueDate,
         },
       });
-
+      if (!onboardingProcess) {
+        console.error('Error creating onboarding process: Process not created');
+        throw new Error('Could not create onboarding process');
+      }
       return onboardingProcess;
     } catch (error) {
       console.error('Error creating onboarding process:', error);
@@ -39,8 +47,6 @@ export class OnboardingServices {
         where: { id: parseInt(id) },
         data: {
           step: payload.step,
-          completed: payload.completed,
-          dueDate: payload.dueDate,
         },
       });
 
@@ -67,6 +73,46 @@ export class OnboardingServices {
       return existingOnboardingProcess;
     } catch (error) {
       throw new Error('Could not delete onboarding process');
+    }
+  }
+  async getAllOnboardProcs(): Promise<any[]> {
+    try {
+      const allOnboardingProcesses = await this.prisma.onboardingProcess.findMany();
+      return allOnboardingProcesses;
+    } catch (error) {
+      console.error('Error fetching all onboarding processes:', error);
+      throw new Error('Could not fetch all onboarding processes');
+    }
+  }
+  async getOnboardById(id: string) {
+    try {
+      const onboardingProcess = await this.prisma.onboardingProcess.findUnique({
+        where: { id: parseInt(id) },
+      });
+
+      if (!onboardingProcess) {
+        throw new Error('Onboarding process not found');
+      }
+
+      return onboardingProcess;
+    } catch (error) {
+      throw new Error('Could not get onboarding process by ID');
+    }
+  }
+  async getOnboardByStep(step: string) {
+    try {
+      const onboardingProcess = await this.prisma.onboardingProcess.findFirst({
+        where: { step },
+      });
+
+      if (!onboardingProcess) {
+        throw new Error('Onboarding process not found');
+      }
+
+      return onboardingProcess;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Could not get onboarding process by step');
     }
   }
 }

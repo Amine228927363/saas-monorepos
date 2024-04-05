@@ -60,41 +60,27 @@
 
 </template>
 
-<script  lang="ts" >
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ref} from 'vue';
-import { toggleCustomerForm } from '@/utils/toggleCustomerForm';
-import {useCustomerStore} from '@/stores/customer'
+<script setup lang="ts">
+import { ref,defineProps } from 'vue';
+import { useCustomerStore } from '@/stores/customer';
 import type { Customer } from '@/types/customer';
-import { defineProps,defineEmits } from 'vue';
-export default {
-  components: {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  },
-  setup() {
-    const custStore= useCustomerStore();
+const props = defineProps<{
+  toggleForm: () => void;
+}>()
+let showCustomerForm=props.showCustomerForm;
+const newCustomer = ref<Customer>({
+  name: '',
+  email: '',
+  organization: '',
+  status: 'New'
+});
+const toggleForm = props.toggleForm;
+const custStore = useCustomerStore();
 
-    const newCustomer=ref({
-     name:'',
-     email:'',
-     organization:'',
-     status:'New'
-
-})
-const handleSubmit = () =>{
-  custStore.createCustomer(newCustomer.value)
-  newCustomer.value = { name: '',email: '', organization: '' ,status: 'New' };
- 
-}
-  
-    return {
-      newCustomer,
-    };
-  },
+const handleSubmit = () => {
+  custStore.createCustomer(newCustomer.value);
+  newCustomer.value = { name: '', email: '', organization: '', status: 'New' };
+  toggleForm();
+  window.location.reload();
 };
 </script>

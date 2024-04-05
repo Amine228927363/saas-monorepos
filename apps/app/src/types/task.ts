@@ -3,15 +3,19 @@ export type task = {
   name: string
   description?: string | null
   processId?: number | null
-  assignedTo?: string | null
   CustomerId?: string | null
-  completed: boolean
+  status?: string
+  dueDate?: Date | null
 }
 export type taskBody = {
   name: string
   description?: string | null
   processId?: number | null
-  assignedTo?: string | null
   CustomerId?: string | null
-  completed: boolean
+  dueDate?: Date | null
+}
+export enum Status {
+  ToDo = 'ToDo',
+  InProgress = 'InProgress',
+  Done = 'Done'
 }
