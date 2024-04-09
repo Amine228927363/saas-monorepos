@@ -1,5 +1,5 @@
 <template>
-   <privateView class="font-mono">
+   <privateView class="">
       <div v-if="showCustomerForm" class="fixed inset-0 bg-gray-900 bg-opacity-80 z-50"></div>
       <div v-if="showTask" class="fixed inset-0 bg-gray-900 bg-opacity-80 z-50"></div>
       <div v-if="showTaskCreate" class="fixed inset-0 bg-gray-900 bg-opacity-80 z-50"></div>
@@ -48,7 +48,7 @@
       </div>
    </privateView>
 </template>
-<script setup lang="ts">
+<script setup lang="">
 import { Plus, X } from 'lucide-vue-next'
 import { ref, watch,defineEmits } from 'vue';
 import CustomerForm from '@/views/components/CreateCustomerForm.vue'

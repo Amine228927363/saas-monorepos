@@ -19,3 +19,11 @@ export interface createCustomerPayload {
   organizationid?: string;
   onboardingProcess: onboardingProc;
 }
+export interface Customer {
+  id: string;
+  email: string;
+  name: string;
+  status: string;
+  organizationid?: string;
+  onboardingProcess: onboardingProc;
+}

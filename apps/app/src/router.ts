@@ -13,11 +13,20 @@ import ForgotRoute from '@/routes/forgot/forgot-route.vue'
 import ResetRoute from '@/routes/reset/reset-route.vue'
 import PrivateNotFoundRoute from '@/routes/private-not-found-route.vue'
 import CreateTask from '@/views/components/CreateTask.vue'
+import FirstView from './modules/home/routes/FirstView.vue'
 import { useUserStore } from '@/stores/user'
 const defaultRoutes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/Landing'
+  },
+  {
+    name: 'Landing',
+    path: '/Landing',
+    component: FirstView,
+    meta: {
+      public: true
+    }
   },
   {
     name: 'login',

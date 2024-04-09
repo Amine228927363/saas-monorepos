@@ -6,7 +6,7 @@
     <span class="font-bold"><h1>Tasks of this Stage:</h1></span>
   
    </div> 
-  <Table>
+  <Table >
     <TableCaption>A list of your recent tasks.</TableCaption>
     <TableHeader>
       <TableRow>
@@ -21,7 +21,7 @@
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow v-for="task in tasks" :key="task.id">
+      <TableRow v-for="task in tasks" :key="task.id" :class="{ 'bg-green-100 text-green-900': task.status === 'Done' }">
         <TableCell class="font-medium">
           {{ task.id }}
         </TableCell>
@@ -30,18 +30,19 @@
           {{ task.description }}
         </TableCell>
         <TableCell>
-          <Select v-model="task.status" @change="handleStatusChange" :placeholder="'Select status for ' + task.id">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem v-for="option in statusOptions" :key="option" :value="option">
-                  {{ option }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <select v-model="task.status" @change="handleStatusChange(task)"  class="flex flex-col py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
+           focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option v-for="option in statusOptions" :key="option" :value="option">{{ option }}</option>
+          </select>
+          
+        </TableCell>
+        <TableCell>
+          <input
+            type="checkbox"
+            :checked="task.status === 'Done'"
+            class="form-checkbox mx-4 h-5 w-5 text-green-500"
+            @change="handleTaskCompletion(task)"
+          />
         </TableCell>
         <TableCell> 
           <button @click="handleDeleteTask(task.id)" class="text-red-600 hover:text-red-900">
@@ -54,7 +55,7 @@
 </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="">
 import { ref, onMounted, defineProps } from 'vue';
 import { Trash, ListTodo } from 'lucide-vue-next';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -96,6 +97,7 @@ const handleDeleteTask = async (taskId) => {
     console.log('Error deleting task:', error);
   }
 };
+
 onMounted(() => {
   fetchTasksByCustomerId(customerId);
 });

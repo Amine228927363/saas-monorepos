@@ -58,7 +58,7 @@
   </public-view>
 </template>
 
-<script setup lang="ts">
+<script setup lang="">
 import { Loader2 as LoaderSpinner } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';

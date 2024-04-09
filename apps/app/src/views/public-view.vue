@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 </script>
 <template>
-  <div class="h-screen bg-gradient-to-br from-blue-600 to-cyan-300">
+  <div class="h-screen bg-gradient-to-r from-violet-600 to-indigo-600">
   <header class="flex items-center justify-between px-9 py-7">
     <img alt="Saas monorepo" height="46" width="115" src="@/assets/images/logo.svg" />
     <v-language-selector />

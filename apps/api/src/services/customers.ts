@@ -78,6 +78,9 @@ export class CustomersService {
       const process = await this.prisma.onboardingProcess.findFirst({
         where: { step: payload.status },
       });
+      if (process === null) {
+        throw new Error('Invalid onboarding step');
+      }
       const processId = process.id;
       const newCustomer = await this.prisma.customer.create({
         data: {

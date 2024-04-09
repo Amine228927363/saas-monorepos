@@ -72,7 +72,7 @@ const newCustomer = ref<Customer>({
   name: '',
   email: '',
   organization: '',
-  status: 'New'
+  status: 'New',
 });
 const toggleForm = props.toggleForm;
 const custStore = useCustomerStore();

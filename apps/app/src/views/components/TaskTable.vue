@@ -13,8 +13,8 @@
         <TableRow v-for="task in Tasks" :key="task.id">
           <TableCell class="font-medium">{{ task.id }}</TableCell>
           <TableCell>{{ task.description }}</TableCell>
-          <TableCell>{{ task.completed }}</TableCell>
-          <TableCell class="text-right">{{ customer}}</TableCell>
+          <TableCell>{{ task.status}}</TableCell>
+          <TableCell class="text-right">{{task.Customer}}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -41,8 +41,7 @@ import { ref,onMounted } from 'vue';
 try {
     
       const customer = await customerStore.getCustomerById(CustomerId);
-      customerCache.set(CustomerId, customer.name);
-      return customer.name;
+      return customer.data.name;
     
   } catch (error) {
     console.log('Error:', error);
@@ -57,7 +56,8 @@ try {
         const customerName = await getCustomerName(task.CustomerId);
         return {
           ...task,
-          customer: customerName,
+          Customer: customerName,
+         
         };
       })
     );
