@@ -65,11 +65,16 @@ const onSubmit = form.handleSubmit(async (values) => {
               <FormMessage name="password" />
             </FormItem>
           </FormField>
-          <router-link
+          <div class="flex justify-between "><router-link
             :to="{ name: 'forgot' }"
             class="text-info text-sm font-semibold hover:underline"
             >{{ t('did_you_forget_password') }}</router-link
           >
+          <router-link
+            :to="{ name: 'register' }"
+            class="text-info   text-sm font-semibold hover:underline"
+            >Create an account?</router-link
+          ></div>
           <Button :disabled="isLoading" class="bg-blue-500 text-indigo-100 py-2
            rounded-md text-lg tracking-wide transition duration-1000">
             <LoaderSpinner v-if="isLoading" class="mr-2 size-4 animate-spin" />

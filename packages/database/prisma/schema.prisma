@@ -31,8 +31,7 @@ model Customer {
   status              String
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
-  organizationId      String?
-  organization        Organization?      @relation(fields: [organizationId], references: [id])
+  organization        String
   onboardingProcessID Int?
   onboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessID], references: [id])
   TaskKeepBy          String?
@@ -41,11 +40,10 @@ model Customer {
 }
 
 model Organization {
-  id        String     @id @default(cuid())
-  name      String
-  email     String     @unique
-  phone     String     @unique
-  customers Customer[]
+  id    String @id @default(cuid())
+  name  String
+  email String @unique
+  phone String @unique
 }
 
 model ContactInfo {

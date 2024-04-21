@@ -10,7 +10,7 @@ export const customerSchema = {
     status: { type: 'string' },
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
-    organizationId: { type: 'string' },
+    organization: { type: 'string' },
     tasks: taskSchema,
     user: userSchema,
   },
@@ -78,7 +78,7 @@ export const getAllCustomersSchema = {
           status: { type: 'string' },
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
-          organizationId: { type: 'string' },
+          organization: { type: 'string' },
           onboardingProcessID: { type: 'number' },
           tasks: { type: 'array', items: { type: 'string' } },
           user: {
@@ -128,7 +128,7 @@ export const getCustomerByIdSchema = {
         email: { type: 'string', format: 'email' },
         name: { type: 'string' },
         status: { type: 'string' },
-        organizationId: { type: 'string' },
+        organization: { type: 'string' },
         onboardingProcessID: { type: 'number' },
         tasks: {
           type: 'array',
@@ -185,7 +185,7 @@ export const updateCustomerSchema = {
       email: { type: 'string', format: 'email' },
       name: { type: 'string' },
       status: { type: 'string' },
-      organizationId: { type: 'string' },
+      organization: { type: 'string' },
       onboardingProcessID: { type: 'number' },
       user: {
         type: 'object',

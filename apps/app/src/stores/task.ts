@@ -71,6 +71,24 @@ export const useTaskStore = defineStore({
         this.error = err?.response?.data
       }
       this.isLoading = false
+    },
+    async validTasks(customerId: string, processId: number) {
+      try {
+        this.isLoading = true
+        const response = await api.get(`/tasks/customer/${customerId}`)
+        const tasks = response.data
+        const StageTasks = tasks.filter((task: task) => task.processId == processId)
+        for (const task of StageTasks) {
+          await this.updateTaskStatusById(task.id, 'Done')
+        }
+        await this.getTasksByCustomerId(customerId)
+        console.log('done')
+      } catch (error) {
+        console.error('Error updating tasks:', error)
+        throw new Error('Unable to update tasks')
+      } finally {
+        this.isLoading = false
+      }
     }
   }
 })

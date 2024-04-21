@@ -24,12 +24,21 @@ export const useCustomerStore = defineStore({
 
       return customersByStatus
     },
+    newCustomersThisWeek(): number {
+      const today = new Date()
+      const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)
+      return this.customers.filter((customer) => {
+        const customerCreatedAt = new Date(customer.createdAt)
+        console.log(customerCreatedAt)
+        return customerCreatedAt >= oneWeekAgo
+      }).length
+    },
     loading(): boolean {
       return this.isLoading
     }
   },
+
   actions: {
-    //create customer functon
     async createCustomer(newCustomer: Customer) {
       this.isLoading = true
       try {
@@ -67,6 +76,30 @@ export const useCustomerStore = defineStore({
         throw new Error('Unable to update customer')
       }
     },
+    async updateCustomerById(id: string, payload: Customer) {
+      try {
+        const updatedFields: any = {}
+        if (payload.name !== undefined) {
+          updatedFields.name = payload.name
+        }
+        if (payload.email !== undefined) {
+          updatedFields.email = payload.email
+        }
+        if (payload.organization !== undefined) {
+          updatedFields.organization = payload.organization
+        }
+        if (Object.keys(updatedFields).length === 0) {
+          console.log('No fields to update.')
+          return null
+        }
+        const response = await api.put(`/customers/updateCustomer/${id}`, updatedFields)
+        return response.data
+      } catch (error) {
+        console.error('Error updating customer:', error)
+        throw new Error('Unable to update customer')
+      }
+    },
+
     async deleteCustomer(id: string) {
       try {
         await api.delete(`/customers/deleteCustomer/${id}`)

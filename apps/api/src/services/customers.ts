@@ -37,6 +37,7 @@ export class CustomersService {
           name: customerData.name,
           email: customerData.email,
           status: customerData.status,
+          organization: customerData.organization,
           onboardingProcessID: customerData.onboardingProcessID,
         },
       });
@@ -68,7 +69,7 @@ export class CustomersService {
           email: true,
           name: true,
           status: true,
-          organizationId: true,
+          organization: true,
         },
       });
       if (customer) {
@@ -87,7 +88,7 @@ export class CustomersService {
           email: payload.email,
           name: payload.name,
           status: payload.status,
-          organizationId: payload.organizationid,
+          organization: payload.organization,
           onboardingProcess: { connect: { id: processId } },
         },
       });

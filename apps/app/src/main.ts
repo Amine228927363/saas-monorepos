@@ -22,6 +22,7 @@ function setup() {
   app.use(i18n)
   app.use(pinia)
   app.use(createHead())
+
   // register components, directives, views, addons
   registerPlugins(app)
   registerDirectives(app)

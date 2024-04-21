@@ -67,19 +67,20 @@ import type { Customer } from '@/types/customer';
 const props = defineProps<{
   toggleForm: () => void;
 }>()
-let showCustomerForm=props.showCustomerForm;
+
 const newCustomer = ref<Customer>({
+  id:'',
   name: '',
   email: '',
   organization: '',
-  status: 'New',
+  status: 'Client Assignement',
 });
 const toggleForm = props.toggleForm;
 const custStore = useCustomerStore();
 
 const handleSubmit = () => {
   custStore.createCustomer(newCustomer.value);
-  newCustomer.value = { name: '', email: '', organization: '', status: 'New' };
+  newCustomer.value = { id:'',name: '', email: '', organization: '', status: 'New' };
   toggleForm();
   window.location.reload();
 };

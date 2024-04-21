@@ -6,8 +6,8 @@
       class=" flex-auto md:flex-none md:w-96 "></KanbanColumn>
     <!-- Bouton pour ajouter une nouvelle colonne -->
     <div class="flex-none w-96">
-      <button @click="showForm = true" class="flex justify-center items-center w-full h-full bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg transition duration-300 
-        ease-in-out hover:bg-opacity-80 rounded-md">
+      <button @click="showForm = true" class="flex justify-center items-center w-full h-full bg-white   bg-opacity-80 backdrop-filter backdrop-blur-lg transition duration-300 
+        ease-in-out hover:bg-opacity-100 hover:bg-slate-100 rounded-md">
         <Plus size="96px" color="gray"></Plus>
       </button>
     </div>
@@ -39,9 +39,11 @@
   import { ref,onMounted,watch,getCurrentInstance } from 'vue';
   import KanbanColumn from './KanbanColumn.vue';
   import {useCustomerStore} from '@/stores/customer'
+  import {useTaskStore} from '@/stores/task'
   import { Plus } from 'lucide-vue-next';
   import {useOnboardingProcStore} from '@/stores/onboarding'
   const customerStore = useCustomerStore();
+  const taskStore=useTaskStore()
   const onboardingProcStore = useOnboardingProcStore();
   const cards = ref([]);
   const onboardingProc=ref([]);
@@ -87,6 +89,7 @@ const moveCard = async (cardId, newStatus) => {
       const process = await onboardingProcStore.getOnboardByStep(newStatus);
       const processId= process.id ;
       await customerStore.updateCustomer(card.id, newStatus, processId);
+      await taskStore.validTasks(card.id,processId - 1);
       console.log(`Updated customer ${card.id} to status: ${newStatus}`);
     } catch (error) {
       console.error('Error updating customer:', error.message);

@@ -65,7 +65,7 @@
             <li class="rounded-sm hover:bg-slate-500">
               <router-link class="text-white flex items-center p-2 space-x-3 rounded-md" to="/customer">
                 <UserRound color=""white></UserRound>
-                <span class="text-gray-100">Customers</span>
+                <span class="text-gray-100">Clients</span>
               </router-link> 
                
                
