@@ -28,6 +28,18 @@ export const useUserStore = defineStore({
     },
     async dehydrate() {
       this.$reset()
+    },
+    async getUserName() {
+      this.isLoading = true
+      try {
+        const res = await api.get('/users/me')
+        const name = res.data.full_name
+        console.log(name)
+        return name
+      } catch (err: any) {
+        console.log(err.message)
+        throw new Error(err.message)
+      }
     }
   }
 })

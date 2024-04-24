@@ -86,20 +86,23 @@ v-if="shareShow">
 </template>
 <script setup lang="">
 import { Plus, X,UserPlus,UsersRound } from 'lucide-vue-next'
-import { ref, watch,defineEmits } from 'vue';
+import { ref, watch,defineEmits,onMounted } from 'vue';
 import CustomerForm from '@/views/components/CreateCustomerForm.vue'
 import CreateTask from '@/views/components/CreateTask.vue'
 import { toggleCustomerForm } from '@/utils/toggleCustomerForm';
 import Stuff from '@/views/components/Staff.vue'
 import Share from '@/views/components/Share.vue'
+import { useRouter } from 'vue-router'
 const { showCustomerForm, toggleForm } = toggleCustomerForm();
 import EditButton from '@/views/components/EditButton.vue'
+const router = useRouter()
 const showTaskCreate=ref(false);
 const showTask = ref(false);
 const stuffShow = ref(false);
 const shareShow = ref(false);
 const customerId = ref(null);
 const status = ref(null);
+
 const createTask = ()=>{
    try {
       showTask.value=false;
@@ -121,6 +124,10 @@ const handleShowTasks = (cardId) => {
   customerId.value = cardId;
   console.log('customer',customerId);
 };
+onMounted(() => {
+   const workspaceId = router.currentRoute.value.params.workspaceId
+  console.log('Workspace ID:', workspaceId);
+});
 </script>
 <style lang="scss">
 .slide-right-enter-active, .slide-right-leave-active {

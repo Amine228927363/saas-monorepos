@@ -14,12 +14,10 @@ model User {
   full_name           String?            @db.VarChar(255)
   create_at           DateTime           @default(now())
   updated_at          DateTime           @default(now()) @updatedAt
-  contactid           Int?
-  contact             ContactInfo?       @relation(fields: [contactid], references: [id])
   customer            Customer[]
   OnboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessId], references: [id])
   onboardingProcessId Int?
-
+  workspaces      Workspace[]
   @@index([email])
   @@map("users")
 }
@@ -37,6 +35,8 @@ model Customer {
   TaskKeepBy          String?
   user                User?              @relation(fields: [TaskKeepBy], references: [id])
   tasks               Task[]
+  workspace           Workspace?         @relation(fields: [workspaceId], references: [id]) 
+  workspaceId         Int?             
 }
 
 model Organization {
@@ -46,14 +46,6 @@ model Organization {
   phone String @unique
 }
 
-model ContactInfo {
-  id        Int    @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String @unique
-  phone     String @unique
-  User      User[]
-}
 
 model OnboardingProcess {
   id       Int        @id @default(autoincrement())
@@ -61,6 +53,12 @@ model OnboardingProcess {
   customer Customer[]
   tasks    Task[]
   user     User[]
+}
+model Workspace {
+  id Int   @id @default(autoincrement())
+  name String 
+  users User[]
+  Customers Customer[]
 }
 
 model Task {

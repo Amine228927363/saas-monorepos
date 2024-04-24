@@ -83,7 +83,7 @@ onMounted(() => {
           </div>
           <!-- Date and Time Section -->
           <Time></Time>
-          <div class="h-2/3 m-4 rounded-md "><ChartGraph class=""></ChartGraph></div>
+         <!--<div class="h-2/3 m-4 rounded-md "><ChartGraph class=""></ChartGraph></div>-->
           
         </div>
       </div>

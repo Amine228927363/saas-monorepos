@@ -189,7 +189,8 @@ const fetchTasksByCustomerId = async (customerId) => {
           console.error('Invalid process ID:', processId);
           break;
         }
-        allTasks.value = await taskStore.getTasksByCustomerId(customerId);  
+        allTasks.value=await taskStore.getTasksByCustomerId(customerId);
+        tasks.value = allTasks.value.filter(task=>task.processId ===customer.data.onboardingProcessID)
     }
   } catch (error) {
     console.error('Error fetching tasks:', error);

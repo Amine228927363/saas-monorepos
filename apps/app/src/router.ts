@@ -14,7 +14,7 @@ import ResetRoute from '@/routes/reset/reset-route.vue'
 import PrivateNotFoundRoute from '@/routes/private-not-found-route.vue'
 import CreateTask from '@/views/components/CreateTask.vue'
 import CustomerProfil from '@/views/components/CustomerProfil.vue'
-import Stuff from '@/views/components/Staff.vue'
+import Workspace from '@/views/components/Workspace.vue'
 import FirstView from './modules/home/routes/FirstView.vue'
 import { useUserStore } from '@/stores/user'
 const defaultRoutes: RouteRecordRaw[] = [
@@ -31,9 +31,9 @@ const defaultRoutes: RouteRecordRaw[] = [
     }
   },
   {
-    name: 'stuff',
-    path: '/stuff',
-    component: Stuff,
+    name: 'workspace',
+    path: '/workspace',
+    component: Workspace,
     meta: {
       public: true
     }
@@ -80,7 +80,7 @@ const defaultRoutes: RouteRecordRaw[] = [
   },
   {
     name: 'customer-view',
-    path: '/customer',
+    path: '/customer/:workspaceId',
     component: CustomerView,
     meta: {
       public: true
