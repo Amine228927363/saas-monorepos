@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import {
   createTaskSchema,
+  deleteTaskByWorkspaceIdSchema,
   deleteTaskSchema,
   getAllTaskSchema,
   getTaskByCustomerIdSchema,
@@ -71,6 +72,22 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       } catch (error) {
         console.log(error);
         return reply.status(500).send({ message: 'Error deleting task' });
+      }
+    },
+  );
+  fastify.delete<{ Params: { workspaceId: number } }>(
+    '/deleteTasks/workspace/:workspaceId',
+    { schema: deleteTaskByWorkspaceIdSchema },
+    async (request, reply) => {
+      const { workspaceId } = request.params;
+      try {
+        await TaskService.deleteTasksByWorkspaceId(workspaceId);
+        return reply.send({ message: 'Tasks deleted successfully for customer', workspaceId });
+      } catch (error) {
+        console.log(error);
+        return reply
+          .status(500)
+          .send({ message: 'Error deleting tasks for customer', workspaceId });
       }
     },
   );

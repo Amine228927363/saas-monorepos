@@ -1,5 +1,11 @@
-import { Prisma, User } from '@saas-monorepo/database';
-
+export interface User {
+  id: string;
+  email: string;
+  password: string;
+  full_name: string;
+  create_at: Date;
+  updated_at: Date;
+}
 export interface GetUserByIdPayload {
   userId: string;
 }

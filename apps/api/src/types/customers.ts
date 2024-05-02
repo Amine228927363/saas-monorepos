@@ -1,5 +1,6 @@
 import { Task } from '@saas-monorepo/database';
 
+import { Workspace } from './Workspace.js';
 import { onboardingProc } from './onboardingProcess.js';
 
 export interface updateCustomerPayload {
@@ -11,6 +12,7 @@ export interface updateCustomerPayload {
   onboardingProcessID?: number;
   userId?: string;
   task?: Task[];
+  workspace?: Workspace;
 }
 export interface createCustomerPayload {
   email: string;
@@ -18,6 +20,7 @@ export interface createCustomerPayload {
   status: string;
   organization: string;
   onboardingProcess: onboardingProc;
+  workspaceId: number;
 }
 export interface Customer {
   id: string;
@@ -26,4 +29,5 @@ export interface Customer {
   status: string;
   organization?: string;
   onboardingProcess: onboardingProc;
+  workspaceId: number;
 }

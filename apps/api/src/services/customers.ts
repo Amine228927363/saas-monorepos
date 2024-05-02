@@ -1,5 +1,4 @@
 import { Customer, PrismaClient } from '@saas-monorepo/database';
-import { createContactPayload } from 'src/types/contact.js';
 import { createCustomerPayload, updateCustomerPayload } from 'src/types/customers.js';
 
 import { AbstractServiceOptions } from '../types/services.js';
@@ -70,6 +69,7 @@ export class CustomersService {
           name: true,
           status: true,
           organization: true,
+          workspace: true,
         },
       });
       if (customer) {
@@ -90,12 +90,39 @@ export class CustomersService {
           status: payload.status,
           organization: payload.organization,
           onboardingProcess: { connect: { id: processId } },
+          workspace: { connect: { id: payload.workspaceId } },
         },
       });
       return newCustomer;
     } catch (error) {
       console.log(error);
       throw new Error();
+    }
+  }
+  async getCustomersByWorkspace(workspaceId: number) {
+    try {
+      const customers = await this.prisma.customer.findMany({
+        where: {
+          workspaceId: workspaceId,
+        },
+      });
+      return customers;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  async deleteCustomersByWorkspace(workspaceId: number) {
+    try {
+      const customers = await this.prisma.customer.deleteMany({
+        where: {
+          workspaceId: workspaceId,
+        },
+      });
+      return customers;
+    } catch (error) {
+      console.log(error);
+      throw new Error(`Could not delete customers for workspace with ID: ${workspaceId}`);
     }
   }
 }

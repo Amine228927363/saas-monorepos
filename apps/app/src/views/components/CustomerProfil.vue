@@ -23,11 +23,10 @@
                         <div class="relative">
                             <div
                                 class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd" />
-                                </svg> </div>
+                                <img class="w-full h-full rounded-full"
+                                :src="generateAvatarUrl(customer.name)"
+                                alt="">
+                            </div>
                         </div>
                         <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
                             <router-link to="/customer"><button
@@ -62,7 +61,7 @@
     </div>
 </template>
 
-<script setup >
+<script setup  lang='ts'>
 import { ref, onMounted,computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customer'
@@ -94,6 +93,15 @@ const numDoneTasks = computed(() => tasks.value.filter(task => task.status === '
 const numNotDoneTasks = computed(() => tasks.value.filter(task => task.status !== 'Done').length);
 const update =()=>{
     toggleForm()
+}
+function generateAvatarUrl(name:string) {
+    if (!name || name.trim().length === 0) {
+        return 'a';
+    }
+    const firstLetter = name.trim().charAt(0).toUpperCase();
+    const avatarUrl = `https://ui-avatars.com/api/?name=${name}`;
+    
+    return avatarUrl;
 }
 const toggleForm=()=>{
    showUpdateForm.value = ! showUpdateForm.value

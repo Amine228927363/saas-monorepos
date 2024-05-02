@@ -6,6 +6,7 @@ export type task = {
   CustomerId?: string | null
   status?: string
   dueDate?: Date | null
+  workspaceId?: number | null
 }
 export type taskBody = {
   name: string
@@ -13,6 +14,7 @@ export type taskBody = {
   processId?: number | null
   CustomerId?: string | null
   dueDate?: Date | null
+  workspaceId?: number | null
 }
 export enum Status {
   ToDo = 'ToDo',

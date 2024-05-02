@@ -43,10 +43,7 @@
           <TableCell class="">
             {{ formatDate(task.dueDate) }}
           </TableCell>
-          <TableCell>
-            <input type="checkbox" :checked="task.status === 'Done'" class="form-checkbox  h-5 w-5 text-green-500"
-              @change="handleTaskCompletion(task)" />
-          </TableCell>
+
           <TableCell>
             <button @click="handleDeleteTask(task.id)" class="text-red-600 hover:text-red-900">
               <span class="flex flex-row px-2 mx-4">Delete<Trash size="12"></Trash></span></button>
@@ -70,8 +67,9 @@ const tasks = ref([]);
 const allTasks = ref([]);
 const tasksdef = ref([]);
 const statusOptions = ['ToDo', 'InProgress', 'Done'];
-const props = defineProps(['customerId', 'showTaskCreate']);
+const props = defineProps(['customerId','workspaceId', 'showTaskCreate']);
 const customerId = props.customerId;
+
 const showTaskCreate = props.showTaskCreate;
 const customerStore = useCustomerStore();
 const designReviewDefaultTasks = [
@@ -136,7 +134,7 @@ const contentDelivryDefaultTasks = [
 ];
 const fetchTasksByCustomerId = async (customerId) => {
   try {
-    
+    const workspaceId = props.workspaceId;
     const customer=await customerStore.getCustomerById(customerId);
     allTasks.value=await taskStore.getTasksByCustomerId(customerId);
     const processId=customer.data.onboardingProcessID;
@@ -153,6 +151,7 @@ const fetchTasksByCustomerId = async (customerId) => {
           ...defaultTask,
           dueDate: dueDate,
           CustomerId: customerId,
+          workspaceId: workspaceId,
         });
       }
       
@@ -164,6 +163,7 @@ const fetchTasksByCustomerId = async (customerId) => {
               ...defaultTask,
               dueDate: dueDate,
               CustomerId: customerId,
+              workspaceId: workspaceId,
             })
           }
           break;
@@ -173,6 +173,7 @@ const fetchTasksByCustomerId = async (customerId) => {
               ...defaultTask,
               dueDate: dueDate,
               CustomerId: customerId,
+              workspaceId: workspaceId,
             });
           }
           break;
@@ -182,6 +183,7 @@ const fetchTasksByCustomerId = async (customerId) => {
               ...defaultTask,
               dueDate: dueDate,
               CustomerId: customerId,
+              workspaceId: workspaceId,
             });
           }
           break;

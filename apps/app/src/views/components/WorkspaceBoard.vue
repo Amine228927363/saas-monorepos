@@ -2,7 +2,8 @@
   <div class="flex flex-wrap">
     <div class="w-1/4 px-4" v-for="(column, index) in workspaceColumns" :key="index">
       <div class="mb-4  " v-for="(workspace, workspaceIndex) in column" :key="workspaceIndex">
-        <router-link :to="{ name: 'customer-view', params: { workspaceId: workspace.id } }"><WorkspaceCard class="hover:bg-gray-100" :workspace="workspace" :deleteWorkspace="deleteWorkspace" /></router-link>
+       <WorkspaceCard class="hover:bg-gray-100" :workspace="workspace" :deleteWorkspace="deleteWorkspace" />
+       
       </div>
     </div>
   </div>
@@ -13,8 +14,12 @@
 import { ref, computed ,onMounted,defineEmits} from 'vue';
 import WorkspaceCard from './WorkspaceCard.vue';
 import { useWorkspaceStore } from '@/stores/workspace';
+import {useCustomerStore} from '@/stores/customer';
+import {useTaskStore} from '@/stores/task'
 import type { Workspace } from '@/types/Workspace';
 const workspaceStore = useWorkspaceStore();
+const customerStore = useCustomerStore();
+const  taskStore=useTaskStore();
 const workspaces = ref<Workspace[]>([]);
 onMounted(async () => {
   try {
@@ -29,8 +34,9 @@ const numColumns = computed(() => Math.ceil(workspaces.value.length / 4));
 
 const deleteWorkspace = async (id: number) => {
   const workspaceStore = useWorkspaceStore();
-  
   try {
+     taskStore.deleteTasksByWorkspaceId(id)
+    await customerStore.deleteCustomersByWorkspace(id);
     await workspaceStore.deleteWorkspace(id);
     workspaces.value = workspaces.value.filter(workspace => workspace.id !== id);
     console.log('workspace deleted successfully ');

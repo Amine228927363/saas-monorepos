@@ -35,7 +35,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 </script>
 <template>
   <public-view>
-    <div class="flex w-full items-center justify-center">
+    <div class="flex w-full h-full items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4">
       <form class="bg-white px-10 py-8 rounded-xl w-screen shadow-xl max-w-sm" @submit.prevent="onSubmit">
         <div class="w-full max-w-xs self-center pb-11 text-center">
           <h1 class="pb-2 text-4xl font-extrabold">{{ t('sign_in') }}</h1>

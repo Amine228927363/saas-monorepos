@@ -4,8 +4,10 @@ import { createCustomerPayload, updateCustomerPayload } from 'src/types/customer
 import {
   createCustomerSchema,
   deleteCustomerSchema,
+  deleteCustomersByWorkspaceSchema,
   getAllCustomersSchema,
   getCustomerByIdSchema,
+  getCustomersByWorkspaceSchema,
   updateCustomerSchema,
 } from '../../../schemas/customer.js';
 import { CustomersService } from '../../../services/customers.js';
@@ -94,6 +96,45 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       try {
         await customersService.deleteCustomer(customerId);
         return reply.send(`Customer with the id ${customerId} was deleted`);
+      } catch (error) {
+        fastify.log.error(error);
+        return reply.status(500).send('Internal Server Error');
+      }
+    },
+  );
+  fastify.get<{ Params: { workspaceId: string } }>(
+    '/customers/workspace/:workspaceId',
+    { schema: getCustomersByWorkspaceSchema },
+    async (request, reply) => {
+      const workspaceId = request.params.workspaceId;
+
+      if (!workspaceId) {
+        return reply.status(400).send('Invalid workspaceId');
+      }
+
+      try {
+        const customers = await customersService.getCustomersByWorkspace(parseInt(workspaceId, 10));
+        return reply.status(200).send(customers);
+      } catch (error) {
+        fastify.log.error(error);
+        return reply.status(500).send('Internal Server Error');
+      }
+    },
+  );
+
+  fastify.delete<{ Params: { workspaceId: string } }>(
+    '/deleteCustomers/workspace/:workspaceId',
+    { schema: deleteCustomersByWorkspaceSchema },
+    async (request, reply) => {
+      const workspaceId = request.params.workspaceId;
+
+      if (!workspaceId) {
+        return reply.status(400).send('Invalid workspaceId');
+      }
+
+      try {
+        await customersService.deleteCustomersByWorkspace(parseInt(workspaceId, 10));
+        return reply.send(`Customers for workspace with id ${workspaceId} were deleted`);
       } catch (error) {
         fastify.log.error(error);
         return reply.status(500).send('Internal Server Error');

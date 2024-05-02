@@ -5,8 +5,9 @@ export type Customer = {
   name: string
   email: string
   organization: string
-  status: 'Client Assignement'
-  tasks: task[]
+  workspaceId: number
+  status: string
+  createdAt: Date
 }
 export type customerBody = {
   name: string

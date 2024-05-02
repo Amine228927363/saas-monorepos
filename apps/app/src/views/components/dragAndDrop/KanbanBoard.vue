@@ -35,8 +35,8 @@
   </div>
 </template>
 
-<script setup>
-  import { ref,onMounted,watch,getCurrentInstance } from 'vue';
+<script setup  lang='ts'>
+  import { ref,onMounted,watch,getCurrentInstance ,defineProps } from 'vue';
   import KanbanColumn from './KanbanColumn.vue';
   import {useCustomerStore} from '@/stores/customer'
   import {useTaskStore} from '@/stores/task'
@@ -47,6 +47,10 @@
   const onboardingProcStore = useOnboardingProcStore();
   const cards = ref([]);
   const onboardingProc=ref([]);
+  const props = defineProps<{
+  workspaceId: { type: NumberConstructor; required: true };
+}>();
+const workspaceId = props.workspaceId;
   const columnStatuses = ref([]);
   const newColumn = ref({
   step: ''
@@ -69,7 +73,7 @@ const fetchStages = async () => {
 };
 const fetchCustomers = async () => {
   try {
-    const customers= await customerStore.getCustomers();
+    const customers= await customerStore.getCustomersByWorkspace(workspaceId);
     cards.value = customers.map(customer => ({
       id: customer.id,
       title: customer.name,

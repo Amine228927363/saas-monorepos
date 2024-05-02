@@ -11,6 +11,7 @@ export const taskSchema = {
     description: { type: ['string', 'null'] },
     processId: { type: ['integer', 'null'] },
     CustomerId: { type: ['string', 'null'] },
+    workspaceId: { type: 'integer' },
     status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
     dueDate: { type: 'string', format: 'date-time' },
   },
@@ -26,6 +27,7 @@ export const createTaskSchema = {
       description: { type: 'string' },
       processId: { type: 'integer' },
       CustomerId: { type: 'string' },
+      workspaceId: { type: 'integer' },
       status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
       dueDate: { type: 'string', format: 'date-time' },
     },
@@ -161,6 +163,7 @@ export const getAllTaskSchema = {
           name: { type: 'string' },
           description: { type: 'string' },
           processId: { type: 'integer' },
+          workspaceId: { type: 'integer' },
           CustomerId: { type: 'string' },
           status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
           dueDate: { type: 'string', format: 'date-time' },
@@ -202,6 +205,7 @@ export const getTaskByCustomerIdSchema = {
           name: { type: 'string' },
           description: { type: 'string' },
           processId: { type: 'integer' },
+          workspaceId: { type: 'integer' },
           CustomerId: { type: 'string' },
           status: { type: 'string', enum: ['ToDo', 'InProgress', 'Done'] },
           dueDate: { type: 'string', format: 'date-time' },
@@ -213,6 +217,37 @@ export const getTaskByCustomerIdSchema = {
       type: 'object',
       properties: {
         message: { type: 'string', default: 'No tasks found for the given customer' },
+      },
+    },
+    500: {
+      description: 'Internal Server Error',
+      type: 'object',
+      properties: {
+        message: { type: 'string', default: 'Internal Server Error' },
+      },
+    },
+  },
+};
+export const deleteTaskByWorkspaceIdSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      workspaceId: { type: 'integer' },
+    },
+  },
+  response: {
+    200: {
+      description: 'Task deleted successfully',
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Task deleted' },
+      },
+    },
+    404: {
+      description: 'No tasks found for the given workspace ID',
+      type: 'object',
+      properties: {
+        message: { type: 'string', default: 'No tasks found for the given workspace ID' },
       },
     },
     500: {

@@ -35,7 +35,7 @@
                 <div class="flex items-center">
                   <div class="flex-shrink-0 w-10 h-10">
                     <img class="w-10 h-10 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      :src="generateAvatarUrl(customer.name)"
                       alt="">
                   </div>
 
@@ -98,20 +98,28 @@ const fetchCustomers = async () => {
     console.log('Error fetching customers:', error);
   }
 };
-
-const getProgressWidth = computed(() => {
-  return (customerId: string): number => {
-    taskStore.getTasksByCustomerId(customerId)
-    .then((fetchedTasks) => {
+function generateAvatarUrl(name:string) {
+    if (!name || name.trim().length === 0) {
+        return 'a';
+    }
+    const avatarUrl = `https://ui-avatars.com/api/?name=${name}`;
+    
+    return avatarUrl;
+}
+const getProgressWidth = async (customerId:string) => {
+    try {
+      const fetchedTasks = await taskStore.getTasksByCustomerId(customerId);
       tasks.value = fetchedTasks;
       const numTasks = tasks.value.length;
       const numDoneTasks = tasks.value.filter(task => task.status === 'Done').length;
       const progress = numTasks > 0 ? (numDoneTasks / numTasks) * 100 : 0;
-      console.log( progress,typeof(progress) );
+      console.log(progress, typeof(progress));
       return progress;
-    })
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return 0; 
+    }
   };
-});
 
 
 

@@ -103,7 +103,7 @@ const defaultRoutes: RouteRecordRaw[] = [
     }
   },
   {
-    path: '/customer/:id',
+    path: '/customerProfil/:id',
     name: 'CustomerProfile',
     component: CustomerProfil,
     props: true

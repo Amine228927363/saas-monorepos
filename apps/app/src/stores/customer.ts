@@ -120,6 +120,25 @@ export const useCustomerStore = defineStore({
         console.error('Error fetching customer:', err)
         throw err
       }
+    },
+    async getCustomersByWorkspace(workspaceId: number) {
+      try {
+        const response = await api.get(`/customers/customers/workspace/${workspaceId}`)
+        this.customers = response.data
+        return response.data
+      } catch (error) {
+        console.error('Error fetching customers by workspace:', error)
+        throw error
+      }
+    },
+    async deleteCustomersByWorkspace(workspaceId: number) {
+      try {
+        await api.delete(`/customers/deleteCustomers/workspace/${workspaceId}`)
+        this.customers = this.customers.filter((cust) => cust.workspaceId !== workspaceId)
+      } catch (error) {
+        console.error('Error deleting customers by workspace:', error)
+        throw new Error('Unable to delete customers by workspace')
+      }
     }
   }
 })

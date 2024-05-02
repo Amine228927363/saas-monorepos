@@ -17,7 +17,8 @@ model User {
   customer            Customer[]
   OnboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessId], references: [id])
   onboardingProcessId Int?
-  workspaces      Workspace[]
+  workspaces          Workspace[]
+
   @@index([email])
   @@map("users")
 }
@@ -35,8 +36,8 @@ model Customer {
   TaskKeepBy          String?
   user                User?              @relation(fields: [TaskKeepBy], references: [id])
   tasks               Task[]
-  workspace           Workspace?         @relation(fields: [workspaceId], references: [id]) 
-  workspaceId         Int?             
+  workspace           Workspace?         @relation(fields: [workspaceId], references: [id])
+  workspaceId         Int?
 }
 
 model Organization {
@@ -46,7 +47,6 @@ model Organization {
   phone String @unique
 }
 
-
 model OnboardingProcess {
   id       Int        @id @default(autoincrement())
   step     String
@@ -54,10 +54,11 @@ model OnboardingProcess {
   tasks    Task[]
   user     User[]
 }
+
 model Workspace {
-  id Int   @id @default(autoincrement())
-  name String 
-  users User[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  users     User[]
   Customers Customer[]
 }
 
@@ -71,6 +72,7 @@ model Task {
   customer    Customer?          @relation(fields: [CustomerId], references: [id])
   status      Status             @default(ToDo)
   dueDate     DateTime
+  workspaceId Int
 }
 
 enum Status {

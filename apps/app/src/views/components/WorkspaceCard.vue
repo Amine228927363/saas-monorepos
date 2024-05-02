@@ -6,7 +6,7 @@
       <div class="flex items-center">
         <!-- Workspace icon (replace with your icon) -->
         <Table2 class="w-6 h-6 mr-2" size="12" color="#d96d6d"></Table2>
-        <span class="font-semibold text-lg">{{ workspace.name }}</span>
+        <router-link :to="{ name: 'customer-view', params: { workspaceId: workspace.id } }"><span class="font-semibold text-lg hover:text-red-400">{{ workspace.name }}</span></router-link>
       </div>
       <!-- Three dots dropdown menu -->
       <div class="relative" x-data="{ open: false }">
@@ -26,10 +26,13 @@
           </div>
         </div>
       </div>
+      
     </div>
+    
     <!-- Bottom section -->
     <div class="mt-4">
       <span class="text-sm text-gray-500">{{ workspace.numberOfClients }} Clients</span>
+      
     </div>
     <!-- Edit workspace form -->
     <div v-if="showEditWorkspace" class="absolute top-0 left-0 w-full h-full bg-gray-200 bg-opacity-60 flex justify-center items-center z-60">
@@ -44,6 +47,7 @@
             <button @click="editWorkspace(workspace.id)" class="px-4 py-2 font-mono bg-blue-500 text-white rounded-md hover:bg-blue-600">Edit Workspace</button>
             <button @click="showEditWorkspace = false" type="button" class="ml-2 px-4 py-2 font-mono bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
           </div>
+         
         </form>
       </div>
     </div>

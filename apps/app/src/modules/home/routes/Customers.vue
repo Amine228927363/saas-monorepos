@@ -33,7 +33,7 @@
          <div
             class="fixed top-0 right-0 transform -translate-x-0 -translate-y-0  h-full w-2/3 bg-white p-6 rounded shadow-md z-50"
             v-if="showCustomerForm">
-            <CustomerForm :toggleForm="toggleForm" class=" h-full"></CustomerForm>
+            <CustomerForm :toggleForm="toggleForm" :workspaceId="workspaceId" class=" h-full"></CustomerForm>
             <button @click="toggleForm" class="absolute left-0 top-0  w-6 rounded-full">
                <X color="gray" size="24"></X>
             </button>
@@ -47,7 +47,7 @@
                <button @click="showTaskCreate=!showTaskCreate" class="absolute left-0 top-0 bg-white rounded-full">
                   <X color="gray" size="24"></X>
                </button>
-               <CreateTask :customerId="customerId" />
+               <CreateTask :customerId="customerId" :workspaceId="workspaceId" />
             </div>
 
          </transition>
@@ -59,7 +59,7 @@
             <Button @click="createTask" class="flex flex-row  mx-2 px-2 py-2  bg-slate-900 rounded">
                <Plus color="white" /> <span class="text-white"> Add Task</span>
             </Button>
-            <Tasks :customerId="customerId" :showTaskCreate="showTaskCreate" />
+            <Tasks :customerId="customerId" :workspaceId="workspaceId" :showTaskCreate="showTaskCreate" />
             <button @click="showTask=!showTask" class="absolute right-0 top-0 bg-red-600 w-4">
                <X color="white" size="16"></X>
             </button>
@@ -75,12 +75,12 @@ v-if="stuffShow">
 <!--share component-->
 <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow-md z-50"
 v-if="shareShow">
-<Share class=""></Share>
+<Share class="" :workspaceId="workspaceId"></Share>
 <button @click="toggleShare" class="absolute right-0 top-0 bg-red-600 w-4">
    <X color="white" size="16"></X>
 </button>
 </div>
-         <KanbanBoard @showTasks="handleShowTasks"></KanbanBoard>
+         <KanbanBoard @showTasks="handleShowTasks" :workspaceId="workspaceId"></KanbanBoard>
       </div>
    </privateView>
 </template>
@@ -102,7 +102,7 @@ const stuffShow = ref(false);
 const shareShow = ref(false);
 const customerId = ref(null);
 const status = ref(null);
-
+const workspaceId = router.currentRoute.value.params.workspaceId;
 const createTask = ()=>{
    try {
       showTask.value=false;
@@ -125,7 +125,7 @@ const handleShowTasks = (cardId) => {
   console.log('customer',customerId);
 };
 onMounted(() => {
-   const workspaceId = router.currentRoute.value.params.workspaceId
+   
   console.log('Workspace ID:', workspaceId);
 });
 </script>

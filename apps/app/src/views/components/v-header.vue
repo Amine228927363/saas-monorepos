@@ -74,6 +74,6 @@ import {Plus } from 'lucide-vue-next'
     <Button  @click="appStore.toggleSideBar()">
       <i class="material-icons">menu</i></Button
     >
-    <img src="@/assets/images/logo.svg" alt="Route Genius" height="30" width="75" />
+    <img src="@/assets/images/logo3.png" alt="Route Genius" height="30" width="75" />
   </section>
 </template>

@@ -17,6 +17,7 @@ export class TaskServices {
           CustomerId: payload.CustomerId,
           status: payload.status,
           dueDate: payload.dueDate,
+          workspaceId: payload.workspaceId,
         },
       });
       return 'Task Created Successfully';
@@ -110,6 +111,19 @@ export class TaskServices {
       return tasks;
     } catch (error) {
       throw new Error(`Error fetching tasks for customer ID ${customerId}`);
+    }
+  }
+  async deleteTasksByWorkspaceId(workspaceId: number) {
+    try {
+      const tasks = await this.prisma.task.deleteMany({
+        where: {
+          workspaceId: workspaceId,
+        },
+      });
+      return tasks;
+    } catch (error) {
+      console.log(error);
+      throw new Error(`Could not delete tasks for workspace  with ID: ${workspaceId}`);
     }
   }
 }

@@ -89,6 +89,18 @@ export const useTaskStore = defineStore({
       } finally {
         this.isLoading = false
       }
+    },
+    async deleteTasksByWorkspaceId(workspaceId: number) {
+      this.isLoading = true
+      try {
+        const response = await api.delete(`/tasks/deleteTasks/workspace/${workspaceId}`)
+        this.tasks = this.tasks.filter((task) => task.workspaceId !== workspaceId)
+      } catch (error) {
+        console.error('Error deleting tasks by customer ID:', error)
+        throw new Error('Unable to delete tasks by customer ID')
+      } finally {
+        this.isLoading = false
+      }
     }
   }
 })

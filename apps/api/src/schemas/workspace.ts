@@ -1,6 +1,15 @@
 import { customerSchema } from './customer.js';
 import { userSchema } from './users.js';
 
+export const workspaceSchema = {
+  type: 'object',
+  properties: {
+    id: { type: 'integer' },
+    name: { type: 'string' },
+  },
+  required: ['id', 'name'],
+};
+
 export const createWorkspaceSchema = {
   tags: ['workspaces'],
   body: {

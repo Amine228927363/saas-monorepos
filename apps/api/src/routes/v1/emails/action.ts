@@ -1,20 +1,21 @@
 import { FastifyPluginAsync } from 'fastify';
-import sendWelcomeEmailSchema from 'src/schemas/email.js';
-import { sendWelcomeEmail } from 'src/services/emailServices.js';
+import sendEmailSchema from 'src/schemas/email.js';
+import { sendEmail } from 'src/services/emailServices.js';
 import { Customer } from 'src/types/customers.js';
+import { User } from 'src/types/users.js';
 
 const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-  fastify.post<{ Body: Customer }>(
+  fastify.post<{ Body: User }>(
     '/sendEmail',
-    { schema: sendWelcomeEmailSchema },
+    { schema: sendEmailSchema },
     async (request, reply) => {
-      const { body: customer } = request;
+      const { body: user } = request;
       try {
-        await sendWelcomeEmail(customer);
-        reply.send({ success: true, message: 'Welcome email sent successfully!' });
+        await sendEmail(user);
+        reply.send({ success: true, message: ' email sent successfully!' });
       } catch (error) {
-        console.error('Error sending welcome email:', error);
-        reply.status(500).send({ success: false, message: 'Failed to send welcome email' });
+        console.error('Error sending  email:', error);
+        reply.status(500).send({ success: false, message: 'Failed to send  email' });
       }
     },
   );

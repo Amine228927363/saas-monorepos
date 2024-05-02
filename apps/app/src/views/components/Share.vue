@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref,defineProps } from 'vue'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Link } from 'lucide-vue-next';
+import { useEmailStore } from '@/stores/email';
+import {generateUniqueLink} from '@/utils/linkGenerator'
+import { mdiConsoleNetwork } from '@mdi/js';
 const options=['Edit', 'Viewer']
+const emailStore=useEmailStore();
+const props = defineProps(['workspaceId']);
+const workspaceId=props.workspaceId;
+const shareEmail= ref({
+  email:'',
+  full_name:'',
+  role:'Edit',
+  link:'',
+})
 const tableData = ref([
   {
     name:"Mehdi",
@@ -42,12 +54,21 @@ function generateAvatarUrl(name:string) {
     if (!name || name.trim().length === 0) {
         return 'a';
     }
-    const firstLetter = name.trim().charAt(0).toUpperCase();
     const avatarUrl = `https://ui-avatars.com/api/?name=${name}`;
     
     return avatarUrl;
 }
 
+const share= async()=>{
+  try {
+    shareEmail.value.link= generateUniqueLink(shareEmail.value.role,workspaceId)
+    await emailStore.sendEmail(shareEmail.value)
+    console.log(shareEmail.value.link)
+    shareEmail.value={email:'',full_name:'',role:'Edit',link:''}
+  } catch (error) {
+    console.log('Error sharing ');  
+  }
+}
 </script>
 
 <template>
@@ -60,15 +81,15 @@ function generateAvatarUrl(name:string) {
             <h1 class="font-bold text-2xl">Share Table </h1>
             <div class="flex flex-row items-center m-8 justify-between">
                 <div class="flex flex-row items-center">
-                  <input type="email" class=" h-10  border rounded-md p-4 text-sm w-full" placeholder="Email address">
+                  <input v-model="shareEmail.email" type="email" class=" h-10  border rounded-md p-4 text-sm w-full" placeholder="Email address">
                   <div class="relative">
-                    <select  class="flex flex-col px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
+                    <select v-model="shareEmail.role" class="flex flex-col px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
                     focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                        <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
                      </select>
                   </div>
                 </div>
-                <Button class="bg-red-400 text-white rounded h-8  w-24 mx-4 px-4 hover:bg-red-600">Share</Button>
+                <Button @click="share" class="bg-red-400 text-white rounded h-8  w-24 mx-4 px-4 hover:bg-red-600">Share</Button>
               </div>
               
               <div class="flex flex-row px-8 border-b  ">

@@ -5,3 +5,6 @@ export type User = {
   createdAt: Date
   updatedAt: Date
 }
+export type userEmail = {
+  email: string
+}

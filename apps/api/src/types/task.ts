@@ -5,6 +5,7 @@ export interface createTaskPayload {
   CustomerId: string;
   status: Status;
   dueDate: Date;
+  workspaceId: number;
 }
 export interface DeleteTaskPayload {
   taskId: string;

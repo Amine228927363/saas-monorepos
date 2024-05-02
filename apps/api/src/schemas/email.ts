@@ -1,15 +1,15 @@
 import { FastifySchema } from 'fastify';
 import { Customer } from 'src/types/customers.js';
 
-const sendWelcomeEmailSchema: FastifySchema = {
+const sendEmailSchema: FastifySchema = {
   body: {
     type: 'object',
-    required: ['name', 'email', 'organization', 'status'], // Update with required fields
+    required: ['email', 'full_name'], // Update with required fields
     properties: {
-      name: { type: 'string' },
       email: { type: 'string', format: 'email' },
-      organization: { type: 'string' },
-      status: { type: 'string' },
+      full_name: { type: 'string' },
+      role: { type: 'string' },
+      link: { type: 'string' },
     },
   },
   response: {
@@ -30,4 +30,4 @@ const sendWelcomeEmailSchema: FastifySchema = {
   },
 };
 
-export default sendWelcomeEmailSchema;
+export default sendEmailSchema;

@@ -71,8 +71,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-const props = defineProps(['customerId','showTaskCreate']);
+const props = defineProps(['customerId','workspaceId','showTaskCreate']);
 const customerId=props.customerId;
+const workspaceId=props.workspaceId;
 const taskStore= useTaskStore();
 const customerStore = useCustomerStore();
 const newTask=ref({
@@ -80,6 +81,7 @@ const newTask=ref({
      description:'',
      processId:'',
      CustomerId:'',
+     workspaceId:0,
      status:'ToDo',
      dueDate:'',
 
@@ -94,6 +96,7 @@ const handleSubmit = async() => {
    
     newTask.value.processId=customer.data.onboardingProcessID;
     newTask.value.CustomerId = customerId;
+    newTask.value.workspaceId = workspaceId;
     // Convert dueDate string to a Date object
     const dueDate = new Date(newTask.value.dueDate);
     if (isNaN(dueDate.getTime())) {

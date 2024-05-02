@@ -61,27 +61,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref,defineProps } from 'vue';
+import { ref,defineProps,onMounted } from 'vue';
 import { useCustomerStore } from '@/stores/customer';
 import type { Customer } from '@/types/customer';
 const props = defineProps<{
   toggleForm: () => void;
-}>()
+  workspaceId: number;
+}>();
+
 
 const newCustomer = ref<Customer>({
   id:'',
   name: '',
   email: '',
   organization: '',
+  workspaceId: props.workspaceId,
   status: 'Client Assignement',
 });
 const toggleForm = props.toggleForm;
 const custStore = useCustomerStore();
-
+const workspaceId = props.workspaceId;
 const handleSubmit = () => {
   custStore.createCustomer(newCustomer.value);
-  newCustomer.value = { id:'',name: '', email: '', organization: '', status: 'New' };
+  newCustomer.value = { id:'', name: '', email: '', organization: '', status: 'New', workspaceId: props.workspaceId };
   toggleForm();
   window.location.reload();
 };
+
 </script>

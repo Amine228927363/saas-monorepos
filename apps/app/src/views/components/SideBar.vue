@@ -63,7 +63,7 @@
              
             </li>
             <li class="rounded-sm hover:bg-slate-500">
-              <router-link class="text-white flex items-center p-2 space-x-3 rounded-md" to="/customer">
+              <router-link class="text-white flex items-center p-2 space-x-3 rounded-md" to="/workspace">
                 <UserRound color=""white></UserRound>
                 <span class="text-gray-100">Clients</span>
               </router-link> 

@@ -21,7 +21,7 @@ onMounted(() => {
   <privateView>
     <div>
       <h3 class="text-3xl font-medium text-gray-700">
-        Dashboard
+        <img src="@/assets/images/logo3.png" alt="Route Genius" height="150" width="190" >
       </h3>
 
       <div class="mt-4">
