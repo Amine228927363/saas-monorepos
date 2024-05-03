@@ -24,7 +24,6 @@ export const useWorkspaceStore = defineStore({
       try {
         const response = await api.get('/workspaces/workspaces')
         this.workspaces = response.data
-        return response.data
       } catch (error) {
         console.error('Error fetching workspaces:', error)
         throw new Error('Unable to fetch workspaces')

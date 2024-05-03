@@ -31,7 +31,12 @@
           </TableCell>
           <TableCell>{{ task.name }}</TableCell>
           <TableCell class="text-right w-[300px]">
-            {{ task.description }}
+            <div @click="toggleDescription(task.id)" class="relative overflow-hidden cursor-pointer">
+              <div :class="{ 'whitespace-nowrap overflow-hidden text-ellipsis': !showFullDescription[task.id], 'block': showFullDescription[task.id] }" class="description-cell">{{ task.description }}</div>
+              <span class="absolute bottom-0 right-0 bg-white bg-opacity-80 p-1 rounded-sm text-xs cursor-pointer" @click.stop="toggleDescription(task.id)">
+                {{ showFullDescription[task.id] ? 'Collapse' : 'Expand' }}
+              </span>
+            </div>
           </TableCell>
           <TableCell>
             <select v-model="task.status" @change="handleStatusChange(task)" class="flex flex-col py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
@@ -74,14 +79,14 @@ const showTaskCreate = props.showTaskCreate;
 const customerStore = useCustomerStore();
 const designReviewDefaultTasks = [
   {
-    name: 'Task 1 Stage 2',
-    description: 'Task 2 description for Stage 2',
+    name: 'Review Design Documents',
+    description: 'Review the design documents, including architectural drawings, ',
     status: 'ToDo',
     processId: 2, 
   },
   {
-    name: 'Task 2 Stage 2',
-    description: 'Task 2 description for Stage 1',
+    name: 'Identify Design Flaws or Issues',
+    description: ' Identify any potential design flaws, errors, or issues that could affect the functionality, safety, or efficiency of the project.',
     status: 'ToDo',
     processId: 2, 
   },
@@ -89,14 +94,14 @@ const designReviewDefaultTasks = [
 ];
 const clientAssignDefaultTasks = [
   {
-    name: 'Task 1 Stage 1',
-    description: 'Task 1 description for Stage 1',
+    name: 'Provide Background Information',
+    description: 'Customers should provide detailed background information ',
     status: 'ToDo',
     processId: 1, 
   },
   {
-    name: 'Task 2 Stage 1',
-    description: 'Task 2 description for Stage 1',
+    name: 'Establish Communication Channels',
+    description: 'Determine the preferred communication channels and frequency of updates. ',
     status: 'ToDo',
     processId: 1, 
   },
@@ -104,14 +109,14 @@ const clientAssignDefaultTasks = [
 ];
 const devProcessDefaultTasks = [
   {
-    name: 'Task 1 Stage 1',
-    description: 'Task 1 description for Stage 1',
+    name: 'Prototyping',
+    description: 'Develop prototypes or mockups to visualize and validate key features and functionalities early in the development process.',
     status: 'ToDo',
     processId: 3, 
   },
   {
-    name: 'Task 2 Stage 1',
-    description: 'Task 2 description for Stage 1',
+    name: 'Coding',
+    description: ' Write code according to the design specifications using programming languages',
     status: 'ToDo',
     processId: 3, 
   },
@@ -119,32 +124,38 @@ const devProcessDefaultTasks = [
 ];
 const contentDelivryDefaultTasks = [
   {
-    name: 'Task 1 Stage 1',
+    name: 'Content Preparation',
     description: 'Task 1 description for Stage 1',
     status: 'ToDo',
     processId: 4, 
   },
   {
-    name: 'Task 2 Stage 1',
-    description: 'Task 2 description for Stage 1',
+    name: 'Content Management',
+    description: 'Organize and manage content repositories or libraries, categorizing content, applying metadata',
     status: 'ToDo',
     processId: 4, 
   },
 
 ];
+const showFullDescription = ref({});
+
+const toggleDescription = (taskId) => {
+  showFullDescription.value[taskId] = !showFullDescription.value[taskId];
+};
 const fetchTasksByCustomerId = async (customerId) => {
   try {
     const workspaceId = props.workspaceId;
     const customer=await customerStore.getCustomerById(customerId);
-    allTasks.value=await taskStore.getTasksByCustomerId(customerId);
-    const processId=customer.data.onboardingProcessID;
+    await taskStore.getTasksByCustomerId(customerId);
+    allTasks.value=taskStore.tasks;
+    const status=customer.data.status;
     tasks.value = allTasks.value.filter(task=>task.processId ===customer.data.onboardingProcessID)
     if(tasks.value.length == 0) {
           const currentDate = new Date();
           const dueDate = new Date(currentDate);
-          dueDate.setDate(dueDate.getDate() + 3); 
-        switch (processId) {
-          case 1:
+          dueDate.setDate(dueDate.getDate() + 10); 
+        switch (status) {
+          case 'Client Assignement':
           
       for (const defaultTask of clientAssignDefaultTasks) {
         await taskStore.createTask({
@@ -157,7 +168,7 @@ const fetchTasksByCustomerId = async (customerId) => {
       
             break;
           
-          case 2 :
+          case "Design Review" :
           for (const defaultTask of designReviewDefaultTasks){
             await taskStore.createTask({
               ...defaultTask,
@@ -167,7 +178,7 @@ const fetchTasksByCustomerId = async (customerId) => {
             })
           }
           break;
-          case 3:
+          case "Developement Process":
           for (const defaultTask of devProcessDefaultTasks) {
             await taskStore.createTask({
               ...defaultTask,
@@ -177,7 +188,7 @@ const fetchTasksByCustomerId = async (customerId) => {
             });
           }
           break;
-        case 4:
+        case "Content Delivry":
           for (const defaultTask of contentDelivryDefaultTasks) {
             await taskStore.createTask({
               ...defaultTask,
@@ -191,7 +202,8 @@ const fetchTasksByCustomerId = async (customerId) => {
           console.error('Invalid process ID:', processId);
           break;
         }
-        allTasks.value=await taskStore.getTasksByCustomerId(customerId);
+        await taskStore.getTasksByCustomerId(customerId);
+        allTasks.value=taskStore.tasks;
         tasks.value = allTasks.value.filter(task=>task.processId ===customer.data.onboardingProcessID)
     }
   } catch (error) {
@@ -224,3 +236,14 @@ onMounted(() => {
 });
 
 </script>
+<style scoped>
+.description-cell {
+  max-width: calc(100% - 24px); 
+
+}
+
+.show-description-cell-full .description-cell {
+  white-space: normal;
+  overflow: visible;
+}
+</style>

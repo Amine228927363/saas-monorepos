@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import { env } from 'process';
 import { Customer } from 'src/types/customers.js';
-import { shareEmail } from 'src/types/email.js';
+import { contactEmail, shareEmail } from 'src/types/email.js';
 import { User } from 'src/types/users.js';
 
 async function sendEmail(user: shareEmail): Promise<void> {
@@ -35,5 +35,29 @@ async function sendEmail(user: shareEmail): Promise<void> {
 
   console.log('Message sent: %s', info.messageId);
 }
+async function contactCustomer(contact: contactEmail): Promise<void> {
+  let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    host: 'smtp.gmail.com',
+    secure: false,
+    port: 587,
+    auth: {
+      user: 'mouhamedaminebensaleh57@gmail.com',
+      pass: 'zzph lwio idnx oetc',
+    },
+  });
+  const info = await transporter.sendMail({
+    from: '"Amine" <mouhamedaminebensaleh57@gmail.com>',
+    to: contact.email,
+    subject: contact.subject,
+    html: `
+    <p>Hello ${contact.name},</p>
+    <p>${contact.message}</p>
+    <p>Sincerely,</p>
+    <p>The Amine Platform Team</p>
+    `,
+  });
+  console.log('Message sent: %s', info.messageId);
+}
 
-export { sendEmail };
+export { sendEmail, contactCustomer };

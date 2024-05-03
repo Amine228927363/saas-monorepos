@@ -12,6 +12,7 @@ export const customerSchema = {
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
     organization: { type: 'string' },
+    workspaceId: { type: 'integer' },
     tasks: taskSchema,
     user: userSchema,
   },
@@ -134,6 +135,7 @@ export const getCustomerByIdSchema = {
         status: { type: 'string' },
         organization: { type: 'string' },
         onboardingProcessID: { type: 'number' },
+        workspaceId: { type: 'integer' },
         tasks: {
           type: 'array',
           items: {

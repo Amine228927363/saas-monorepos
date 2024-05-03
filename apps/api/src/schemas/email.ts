@@ -29,5 +29,32 @@ const sendEmailSchema: FastifySchema = {
     },
   },
 };
-
+export const contactCustomerSchema: FastifySchema = {
+  body: {
+    type: 'object',
+    required: ['name', 'email', 'message', 'subject'],
+    properties: {
+      name: { type: 'string' },
+      email: { type: 'string', format: 'email' },
+      message: { type: 'string' },
+      subject: { type: 'string' },
+    },
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean' },
+        message: { type: 'string' },
+      },
+    },
+    500: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean', default: false },
+        message: { type: 'string' },
+      },
+    },
+  },
+};
 export default sendEmailSchema;

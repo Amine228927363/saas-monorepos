@@ -29,11 +29,12 @@
                             </div>
                         </div>
                         <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-                            <router-link to="/customer"><button
+                            <router-link  :to="{ name: 'customer-view', params: { workspaceId:customer.workspaceId} }"><button
                                 class="text-white py-2 px-4 h-12 w-18 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                                 Manage</button></router-link>
                                  <button
-                                class="text-white py-2 h-12 w-18 px-4 uppercase rounded bg-green-700 hover:bg-green-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                                class="text-white py-2 h-12 w-18 px-4 uppercase rounded bg-green-700 hover:bg-green-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                                @click="toggleContact">
                                 Message</button> </div>
                     </div>
                     <div class="mt-20 text-center text-white border-b pb-12">
@@ -47,13 +48,18 @@
                    
                 </div>
         </div>
-        <div v-if="showUpdateForm" class="fixed top-0 right-0 transform -translate-x-0 -translate-y-0  h-full w-2/3 bg-white p-6 rounded shadow-md z-50">
+        <div v-if="showUpdateForm" class="fixed top-0 right-0 transform -translate-x-0 -translate-y-0  h-full bg-white p-6 rounded shadow-md z-50">
             <updateCustomerForm :toggleForm="toggleForm" :customerId="customerId" class=" h-full" ></updateCustomerForm>
             <button @click="toggleForm" class="absolute left-0 top-0  w-6 rounded-full">
                 <X color="gray" size="24"></X>
              </button>
         </div>
-     
+        <div v-if="contact" class="fixed top-0 left-1/2 transform -translate-x-0 -translate-y-0  w-[420px] bg-white p-6 rounded shadow-md z-50">
+            <Contact :toggleContact="toggleContact" :customerId="customerId" :customer="customer" class=" h-full w-full" ></Contact>
+            <button @click="toggleContact" class="absolute left-0 top-0  w-6 rounded-full">
+                <X color="gray" size="24"></X>
+             </button>
+        </div>
     </div>
     <div v-else>
         <p>Loading...</p>
@@ -65,12 +71,12 @@
 import { ref, onMounted,computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customer'
-import { mdiAccount, mdiMail, mdiAsterisk, mdiFormTextboxPassword, mdiGithub } from '@mdi/js'
 import { useTaskStore } from '@/stores/task';
 import { Plus, X } from 'lucide-vue-next'
 import EditButton from './EditButton.vue'
 import {Pen} from 'lucide-vue-next'
 import updateCustomerForm from './updateCustomer.vue'
+import Contact from './Contact.vue';
 const taskStore=useTaskStore();
 const customerStore = useCustomerStore()
 const router = useRouter()
@@ -78,11 +84,15 @@ const customerId = router.currentRoute.value.params.id
 const customer = ref(null)
 const tasks=ref([])
 const showUpdateForm=ref(false);
-const fetchCustomerById = async (customerId) => {
+const contact=ref(false)
+const fetchCustomerById = async (customerId:string) => {
     try {
         const res =await customerStore.getCustomerById(customerId)
         customer.value = res.data
-        tasks.value=await taskStore.getTasksByCustomerId(customerId);
+        const workspaceId=customer.value.workspaceId;
+        await taskStore.getTasksByCustomerId(customerId);
+        tasks.value=taskStore.tasks
+        console.log(workspaceId)
     } catch (error) {
         console.error('Error fetching customer:', error)
     }
@@ -98,13 +108,15 @@ function generateAvatarUrl(name:string) {
     if (!name || name.trim().length === 0) {
         return 'a';
     }
-    const firstLetter = name.trim().charAt(0).toUpperCase();
     const avatarUrl = `https://ui-avatars.com/api/?name=${name}`;
     
     return avatarUrl;
 }
 const toggleForm=()=>{
    showUpdateForm.value = ! showUpdateForm.value
+}
+const toggleContact=()=>{
+    contact.value=!contact.value
 }
 onMounted(() => {
     fetchCustomerById(customerId)

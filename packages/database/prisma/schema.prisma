@@ -18,7 +18,7 @@ model User {
   OnboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessId], references: [id])
   onboardingProcessId Int?
   workspaces          Workspace[]
-
+  workspaceMembers    WorkspaceMember[]
   @@index([email])
   @@map("users")
 }
@@ -60,7 +60,17 @@ model Workspace {
   name      String
   users     User[]
   Customers Customer[]
+  members     WorkspaceMember[]
 }
+model WorkspaceMember {
+  id          Int      @id @default(autoincrement())
+  role        Role
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId Int
+}
+
 
 model Task {
   id          Int                @id @default(autoincrement())
@@ -79,4 +89,8 @@ enum Status {
   ToDo
   InProgress
   Done
+}
+enum Role {
+  Editor
+  Viewer
 }

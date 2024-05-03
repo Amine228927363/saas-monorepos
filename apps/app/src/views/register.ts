@@ -7,6 +7,7 @@ import TaskTable from './components/TaskTable.vue'
 import Button from './components/Button.vue'
 import Form from './components/CreateCustomerForm.vue'
 import Tasks from './components/tasks.vue'
+import Contact from './components/Contact.vue'
 export function registerViews(app: App): void {
   app.component('PrivateView', PrivateView)
   app.component('PublicView', PublicView)
@@ -16,4 +17,5 @@ export function registerViews(app: App): void {
   app.component('button', Button)
   app.component('CustomerForm', Form)
   app.component('Tasks', Tasks)
+  app.component('Contact', Contact)
 }

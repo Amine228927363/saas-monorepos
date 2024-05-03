@@ -56,7 +56,6 @@ export const useCustomerStore = defineStore({
       try {
         const response = await api.get('/customers/allCustomers')
         this.customers = response.data
-        return response.data
       } catch (error) {
         console.error('Error fetching customers:', error)
         throw new Error('Unable to fetch customers')
@@ -125,7 +124,6 @@ export const useCustomerStore = defineStore({
       try {
         const response = await api.get(`/customers/customers/workspace/${workspaceId}`)
         this.customers = response.data
-        return response.data
       } catch (error) {
         console.error('Error fetching customers by workspace:', error)
         throw error

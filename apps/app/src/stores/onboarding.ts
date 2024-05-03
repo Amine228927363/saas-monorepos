@@ -36,7 +36,6 @@ export const useOnboardingProcStore = defineStore({
       try {
         const response = await api.get('/onboardingProcess/getAllOnboard')
         this.onboardingProcs = response.data
-        return response.data
       } catch (error) {
         console.error('Error fetching onboarding processes:', error)
         throw new Error('Unable to fetch onboarding processes')

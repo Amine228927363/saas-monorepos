@@ -67,7 +67,7 @@
 <!--stuff members -->
 <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow-md z-50"
 v-if="stuffShow">
-<Stuff class=""></Stuff>
+<Stuff :workspaceId="workspaceId" class=""></Stuff>
 <button @click="toggleStaff" class="absolute right-0 top-0 bg-red-600 w-4">
    <X color="white" size="16"></X>
 </button>

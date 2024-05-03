@@ -63,12 +63,18 @@ export class WorkspaceServices {
   async deleteWorkspace(id: number) {
     try {
       const workspace = await this.prisma.workspace.findUnique({
-        where: { id: id },
+        where: { id },
+        include: { members: true },
       });
+
       if (!workspace) {
         throw new Error('Workspace not found');
       }
 
+      // Delete workspace members first
+      await this.prisma.workspaceMember.deleteMany({
+        where: { workspaceId: id },
+      });
       await this.prisma.workspace.delete({
         where: { id },
       });

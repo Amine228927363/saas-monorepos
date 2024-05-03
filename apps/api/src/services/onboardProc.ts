@@ -8,6 +8,17 @@ export class OnboardingServices {
   constructor(options: AbstractServiceOptions) {
     this.prisma = options.prisma;
   }
+  async getNextOnboardingProcessId(): Promise<number> {
+    const latestProcess = await this.prisma.onboardingProcess.findFirst({
+      orderBy: { id: 'desc' },
+    });
+
+    if (latestProcess) {
+      return latestProcess.id + 1;
+    } else {
+      return 1;
+    }
+  }
   async createOnboardProc(payload: createOnbordProc) {
     try {
       const existingProcess = await this.prisma.onboardingProcess.findFirst({
@@ -17,8 +28,10 @@ export class OnboardingServices {
         console.error('Error creating onboarding process: Process with this name already exists');
         throw new Error('Onboarding process with this name already exists');
       }
+      const nextId = await this.getNextOnboardingProcessId();
       const onboardingProcess = await this.prisma.onboardingProcess.create({
         data: {
+          id: nextId,
           step: payload.step,
         },
       });

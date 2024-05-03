@@ -67,7 +67,7 @@
                   <line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg>
                 </div>
               </td>
-              <td class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
+              <td class="px-24 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                 <router-link class="text-indigo-600 hover:text-indigo-900"
                   :to="{ name: 'CustomerProfile', params: { id: customer.id } }">Edit</router-link>
               </td>
@@ -92,8 +92,8 @@ const searchTerm = ref<string>('');
   const tasks=ref<task[]>([])
 const fetchCustomers = async () => {
   try {
-    const fetchedCustomers = await customerStore.getCustomers();
-    customerList.value = fetchedCustomers;
+    await customerStore.getCustomers();
+    customerList.value = customerStore.customers;
   } catch (error) {
     console.log('Error fetching customers:', error);
   }
@@ -108,8 +108,8 @@ function generateAvatarUrl(name:string) {
 }
 const getProgressWidth = async (customerId:string) => {
     try {
-      const fetchedTasks = await taskStore.getTasksByCustomerId(customerId);
-      tasks.value = fetchedTasks;
+      await taskStore.getTasksByCustomerId(customerId)
+      tasks.value = taskStore.tasks;
       const numTasks = tasks.value.length;
       const numDoneTasks = tasks.value.filter(task => task.status === 'Done').length;
       const progress = numTasks > 0 ? (numDoneTasks / numTasks) * 100 : 0;
@@ -127,7 +127,6 @@ onMounted(() => {
   fetchCustomers();
  
 });
-
 const handleSearch = () => {
   searchTerm.value = searchTerm.value.trim();
 };

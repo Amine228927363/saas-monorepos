@@ -42,15 +42,16 @@
   import {useTaskStore} from '@/stores/task'
   import { Plus } from 'lucide-vue-next';
   import {useOnboardingProcStore} from '@/stores/onboarding'
+  import type { Ref } from 'vue';
+  import type { Card } from '@/types/card';
+import type { onboardingProc } from '@/types/onboardingProc';
   const customerStore = useCustomerStore();
   const taskStore=useTaskStore()
   const onboardingProcStore = useOnboardingProcStore();
-  const cards = ref([]);
-  const onboardingProc=ref([]);
-  const props = defineProps<{
-  workspaceId: { type: NumberConstructor; required: true };
-}>();
-const workspaceId = props.workspaceId;
+  const cards : Ref<Card[]>=ref([]);
+  const onboardingProc:Ref<onboardingProc[]>=ref([]);
+   const props = defineProps(['workspaceId']);
+const workspaceId=props.workspaceId;
   const columnStatuses = ref([]);
   const newColumn = ref({
   step: ''
@@ -64,8 +65,9 @@ const showForm = ref(false);
 const getavatar =()=>{return mockAvatarUrls[1];}; 
 const fetchStages = async () => {
   try {
-    const onboardingProcs = await onboardingProcStore.getAllOnboardingProcs();
-    onboardingProc.value= onboardingProcs;
+    await onboardingProcStore.getAllOnboardingProcs();
+    const onboardingProcs = onboardingProcStore.onboardingProcs;
+    onboardingProc.value= onboardingProcStore.onboardingProcs;
     columnStatuses.value = onboardingProcs.map(proc => proc.step);
   } catch (error) {
     console.error('Error fetching onboarding stages:', error);
@@ -73,7 +75,8 @@ const fetchStages = async () => {
 };
 const fetchCustomers = async () => {
   try {
-    const customers= await customerStore.getCustomersByWorkspace(workspaceId);
+    await customerStore.getCustomersByWorkspace(workspaceId);
+    const customers= customerStore.customers;
     cards.value = customers.map(customer => ({
       id: customer.id,
       title: customer.name,
@@ -85,7 +88,7 @@ const fetchCustomers = async () => {
 
   }
 };
-const moveCard = async (cardId, newStatus) => {
+const moveCard = async (cardId:string, newStatus:string) => {
   const card = cards.value.find(card => card.id === cardId);
   if (card) {
     card.status = newStatus;
@@ -96,7 +99,7 @@ const moveCard = async (cardId, newStatus) => {
       await taskStore.validTasks(card.id,processId - 1);
       console.log(`Updated customer ${card.id} to status: ${newStatus}`);
     } catch (error) {
-      console.error('Error updating customer:', error.message);
+      console.error('Error updating customer:', error);
       card.status = card.status;
     }
   }
@@ -114,10 +117,10 @@ const addNewColumn = async () => {
     newColumn.value = {step:''}
     fetchStages();
   } catch (error) {
-    console.error('Error creating new column:', error.message);
+    console.error('Error creating new column:', error);
   }
 };
-const deleteColumn = async (status) => {
+const deleteColumn = async (status:string) => {
   try {
     const procToDelete = onboardingProc.value.find(proc => proc.step === status);
     if (!procToDelete) {
@@ -129,7 +132,7 @@ const deleteColumn = async (status) => {
     console.log('Stage deleted successfully');
     columnStatuses.value = columnStatuses.value.filter(s => s !== status);
   } catch (error) {
-    console.error('Error deleting column:', error.message);
+    console.error('Error deleting column:', error);
   }
 };
 
@@ -137,7 +140,7 @@ onMounted(() => {
   fetchCustomers();
   fetchStages();
 });
-const filteredCards = (status) => cards.value.filter(card => card.status === status);
+const filteredCards = (status:string) => cards.value.filter(card => card.status === status);
 watch(customerStore.customers, (newCustomers) => {
   cards.value = newCustomers.map(customer => ({
     id: customer.id,
@@ -148,7 +151,7 @@ watch(customerStore.customers, (newCustomers) => {
 });
 const instance = getCurrentInstance();
   
-const handleShowTasks = (cardId) => {
+const handleShowTasks = (cardId:string) => {
   instance.emit('showTasks', cardId, status);
 };
   </script>

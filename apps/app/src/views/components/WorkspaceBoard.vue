@@ -23,8 +23,8 @@ const  taskStore=useTaskStore();
 const workspaces = ref<Workspace[]>([]);
 onMounted(async () => {
   try {
-    const fetchedWorkspaces = await workspaceStore.getAllWorkspaces(); 
-    workspaces.value = fetchedWorkspaces; 
+    await workspaceStore.getAllWorkspaces(); 
+    workspaces.value = workspaceStore.workspaces; 
   } catch (error) {
     console.error('Error fetching workspaces:', error);
   }
@@ -35,7 +35,7 @@ const numColumns = computed(() => Math.ceil(workspaces.value.length / 4));
 const deleteWorkspace = async (id: number) => {
   const workspaceStore = useWorkspaceStore();
   try {
-     taskStore.deleteTasksByWorkspaceId(id)
+    await taskStore.deleteTasksByWorkspaceId(id)
     await customerStore.deleteCustomersByWorkspace(id);
     await workspaceStore.deleteWorkspace(id);
     workspaces.value = workspaces.value.filter(workspace => workspace.id !== id);

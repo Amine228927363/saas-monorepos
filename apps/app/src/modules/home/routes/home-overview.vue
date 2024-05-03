@@ -8,13 +8,17 @@ import { useTaskStore } from '@/stores/task';
 import ChartGraph from '@/views/components/ChartGraph.vue'
 const taskStore = useTaskStore();
 const customerStore = useCustomerStore();
+const numTasks=ref()
 const numCustomers = computed(() => customerStore.totalCustomers);
-
-const tasks = computed(() => { return taskStore.getAllTasks() })
-const numTasks = computed(() => taskStore.tasks.length)
+const totalTask=async ()=>{
+  await taskStore.getAllTasks();
+   numTasks.value= taskStore.tasks.length;
+  console.log(numTasks);
+}
 onMounted(() => {
   customerStore.getCustomers();
-  taskStore.getAllTasks();
+  totalTask();
+
 });
 </script>
 <template>

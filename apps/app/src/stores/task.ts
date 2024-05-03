@@ -10,6 +10,11 @@ export const useTaskStore = defineStore({
     isLoading: false,
     error: null as ServerError | null
   }),
+  getters: {
+    totalTasks(): number {
+      return this.tasks.length || 0
+    }
+  },
   actions: {
     async createTask(newTask: task) {
       this.isLoading = true
@@ -26,7 +31,6 @@ export const useTaskStore = defineStore({
       try {
         const response = await api.get('/tasks/tasks')
         this.tasks = response.data
-        return response.data
       } catch (error) {
         console.error('Error fetching tasks:', error)
 
@@ -35,11 +39,11 @@ export const useTaskStore = defineStore({
         this.isLoading = false
       }
     },
-    async getTasksByCustomerId(customerId: string): Promise<task[]> {
+    async getTasksByCustomerId(customerId: string) {
       this.isLoading = true
       try {
         const response = await api.get(`/tasks/customer/${customerId}`)
-        return response.data
+        this.tasks = response.data
       } catch (error) {
         console.error('Error fetching tasks by customer ID:', error)
         throw new Error('Unable to fetch tasks by customer ID')
