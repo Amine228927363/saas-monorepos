@@ -12,7 +12,7 @@ model User {
   email               String             @unique
   password            String             @db.Text()
   full_name           String?            @db.VarChar(255)
-  create_at           DateTime           @default(now())
+  created_at           DateTime           @default(now())
   updated_at          DateTime           @default(now()) @updatedAt
   customer            Customer[]
   OnboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessId], references: [id])

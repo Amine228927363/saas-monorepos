@@ -23,13 +23,15 @@ onMounted(() => {
 </script>
 <template>
   <privateView>
-    <div>
-      <h3 class="text-3xl font-medium text-gray-700">
+    <div >
+      <div class="flex flex-row ">
+        <h3 class="text-3xl font-medium text-gray-700">
         <img src="@/assets/images/logo3.png" alt="Route Genius" height="150" width="190" >
       </h3>
-
+      <Time class="inline mx-11 translate-y-4"></Time>
+    </div>
       <div class="mt-4">
-
+       
         <div class="flex flex-wrap -mx-6">
           <div class="w-full px-6 sm:w-1/2 xl:w-1/3">
             <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
@@ -86,27 +88,15 @@ onMounted(() => {
 
           </div>
           <!-- Date and Time Section -->
-          <Time></Time>
-         <!--<div class="h-2/3 m-4 rounded-md "><ChartGraph class=""></ChartGraph></div>-->
-          
+         
+      <div class="h-2/3  rounded-md ">
+        <ChartGraph class="w-2/3 h-2/3"></ChartGraph></div>
+       
         </div>
       </div>
-
-      <div class="mt-8" />
-      <Customers></Customers>
-
+      <Customers class=""></Customers>
+      
+      
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
   </privateView>
 </template>

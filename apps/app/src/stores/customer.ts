@@ -137,6 +137,20 @@ export const useCustomerStore = defineStore({
         console.error('Error deleting customers by workspace:', error)
         throw new Error('Unable to delete customers by workspace')
       }
+    },
+    async getCustomersForWeek() {
+      try {
+        const today = new Date()
+        const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)
+
+        return this.customers.filter((customer) => {
+          const customerCreatedAt = new Date(customer.createdAt)
+          return customerCreatedAt >= oneWeekAgo
+        })
+      } catch (error) {
+        console.error("Couldn't filter out non-weekly customers:", error)
+        return []
+      }
     }
   }
 })
