@@ -12,13 +12,14 @@ model User {
   email               String             @unique
   password            String             @db.Text()
   full_name           String?            @db.VarChar(255)
-  created_at           DateTime           @default(now())
+  created_at          DateTime           @default(now())
   updated_at          DateTime           @default(now()) @updatedAt
   customer            Customer[]
   OnboardingProcess   OnboardingProcess? @relation(fields: [onboardingProcessId], references: [id])
   onboardingProcessId Int?
   workspaces          Workspace[]
   workspaceMembers    WorkspaceMember[]
+
   @@index([email])
   @@map("users")
 }
@@ -56,21 +57,21 @@ model OnboardingProcess {
 }
 
 model Workspace {
-  id        Int        @id @default(autoincrement())
+  id        Int               @id @default(autoincrement())
   name      String
   users     User[]
   Customers Customer[]
-  members     WorkspaceMember[]
+  members   WorkspaceMember[]
 }
+
 model WorkspaceMember {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   role        Role
-  user        User     @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
   userId      String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
   workspaceId Int
 }
-
 
 model Task {
   id          Int                @id @default(autoincrement())
@@ -90,6 +91,7 @@ enum Status {
   InProgress
   Done
 }
+
 enum Role {
   Editor
   Viewer

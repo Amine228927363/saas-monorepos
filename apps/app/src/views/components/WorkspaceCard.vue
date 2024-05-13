@@ -31,7 +31,7 @@
     
     <!-- Bottom section -->
     <div class="mt-4">
-      <span class="text-sm text-gray-500">{{ workspace.numberOfClients }} Clients</span>
+      <span class="text-sm text-gray-500">{{ props.numClients }} Clients</span>
       
     </div>
     <!-- Edit workspace form -->
@@ -67,7 +67,8 @@ const newWorkspace = ref({
 
 const props = defineProps<{
   workspace: Record<string, any>,
-  deleteWorkspace: (WorkspaceId: number) => Promise<void>
+  deleteWorkspace: (WorkspaceId: number) => Promise<void>,
+    numClients: number 
 }>();
 
 // Function to delete a workspace

@@ -45,6 +45,5 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
       fastify.log.info('Routes loaded');
     });
 };
-
 export default app;
 export { app, options };

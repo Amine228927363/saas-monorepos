@@ -198,3 +198,42 @@ export const deleteUserSchema = {
     },
   },
 };
+//get user by email schema
+// Get user by email Schema
+export const getUserByEmailSchema = {
+  tags: ['users'],
+  params: {
+    type: 'object',
+    properties: {
+      email: { type: 'string', format: 'email' },
+    },
+  },
+  response: {
+    200: {
+      description: 'Successful response',
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        email: { type: 'string' },
+        full_name: { type: 'string' },
+      },
+    },
+    '4xx': {
+      type: 'object',
+      properties: {
+        status: { type: 'number' },
+        code: { type: 'string' },
+        message: { type: 'string' },
+      },
+    },
+    500: {
+      description: 'Error response',
+      type: 'object',
+      properties: {
+        status: { type: 'number', default: 500 },
+        code: { type: 'string' },
+        message: { type: 'string' },
+      },
+    },
+  },
+};

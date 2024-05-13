@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient, User } from '@saas-monorepo/database';
+import { error } from 'node:console';
 import {
   GetUserByIdPayload,
   deleteUserByIdPayload,
@@ -56,5 +57,16 @@ export class UsersService {
       data: payload,
     });
     return updatedUser;
+  }
+  async getUserByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      console.error('there is no user with this email');
+    }
+    return user;
   }
 }

@@ -1,30 +1,51 @@
 <script setup lang="ts">
-import { ref,defineProps,onMounted } from 'vue'
+import { ref,defineProps,onMounted,watch } from 'vue'
 import type { Ref } from 'vue';
 import { Link } from 'lucide-vue-next';
 import { useEmailStore } from '@/stores/email';
 import { useMemberStore } from '@/stores/member';
 import {generateUniqueLink} from '@/utils/linkGenerator'
+import { fetchUserDetailsByEmail } from '@/utils/member';
 import type { MemberWithDetails, createMember, workspaceMember } from '@/types/workspaceMember';
+import { useAuthStore } from '@/stores/auth';
+import { string } from 'zod';
 const options=['Editor', 'Viewer']
 const emailStore=useEmailStore();
 const props = defineProps(['workspaceId']);
 const workspaceId=props.workspaceId;
+const authStore= useAuthStore()
 const memberStore = useMemberStore();
 const shareEmail= ref({
+  userId:'',
   email:'',
   full_name:'',
   role:'Editor',
   link:'',
 })
-const addMember= async (member:createMember)=>{
+const newMember= ref({
+  userId:'',
+  role:'Editor',
+  workspaceId:workspaceId
+})
+const members: Ref<MemberWithDetails[]> = ref([])
+const authToken=  authStore.token
+const getUserData= async (email:string)=>{
   try {
-    const res = await memberStore.createMember(member)
+    const userData = await fetchUserDetailsByEmail(email,authToken)
+    if (userData) {
+      console.log('User Full Name:', userData.full_name);
+      console.log('User ID:', userData.id);
+      return userData
+    } else {
+      console.log('User not found or error occurred.');
+    }
   } catch (error) {
     console.log('Error in adding new user to the workspace');  
   }
 }
-const members: Ref<MemberWithDetails[]> = ref([])
+const generateLink=async ()=>{
+  shareEmail.value.link=await generateUniqueLink(newMember.value.role,workspaceId,)
+}
 const fetchMembers = async () => {
   try {
     await memberStore.getMembersByWorkspace(workspaceId);
@@ -44,17 +65,26 @@ function generateAvatarUrl(name:string) {
 
 const share= async()=>{
   try {
+    const userData= await getUserData(shareEmail.value.email)
+    const userId= userData.id
+    newMember.value.workspaceId=workspaceId
+    newMember.value.userId=userId
+    const newMemberValue = newMember.value;
+    console.log(shareEmail.value.role)
+    await generateLink()
+    await memberStore.createMember(newMemberValue)
     await emailStore.sendEmail(shareEmail.value)
     alert("Invitation sent successfully")
-    console.log(shareEmail.value.link)
-    shareEmail.value={email:'',full_name:'',role:'Editor',link:''}
+    await fetchMembers()
+    shareEmail.value={userId:'',email:'',full_name:'',role:'Editor',link:''}
   } catch (error) {
     console.log('Error sharing ');  
   }
 }
 const showNotification = ref(false);
 
-const copyLink = () => {
+const copyLink =async () => {
+   await generateLink()
   navigator.clipboard.writeText(shareEmail.value.link)
     .then(() => {
       showNotification.value = true;
@@ -66,8 +96,9 @@ const copyLink = () => {
 };
 onMounted(() => {
   fetchMembers();
-  shareEmail.value.link=generateUniqueLink(shareEmail.value.role,workspaceId)
 });
+
+
 </script>
 
 <template>
@@ -85,7 +116,7 @@ onMounted(() => {
                 <div class="flex flex-row items-center">
                   <input v-model="shareEmail.email" type="email" class=" h-10  border rounded-md p-4 text-sm w-full" placeholder="Email address">
                   <div class="relative">
-                    <select v-model="shareEmail.role" class="flex flex-col px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
+                    <select v-model="newMember.role" class="flex flex-col px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none
                     focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                        <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
                      </select>
@@ -123,7 +154,7 @@ onMounted(() => {
                   </td>
               
                   <td class="py-4 px-6">
-                    <select  class="flex flex-col px-4 py-2 translate-x-[45px] border border-gray-300 rounded-md shadow-sm focus:outline-none
+                    <select v-model="item.role"  class="flex flex-col px-4 py-2 translate-x-[45px] border border-gray-300 rounded-md shadow-sm focus:outline-none
            focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
               <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
             </select>

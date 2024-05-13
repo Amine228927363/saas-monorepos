@@ -15,6 +15,7 @@ import PrivateNotFoundRoute from '@/routes/private-not-found-route.vue'
 import CreateTask from '@/views/components/CreateTask.vue'
 import CustomerProfil from '@/views/components/CustomerProfil.vue'
 import Workspace from '@/views/components/Workspace.vue'
+import Confirmation from './views/components/Confirmation.vue'
 import FirstView from './modules/home/routes/FirstView.vue'
 import { useUserStore } from '@/stores/user'
 const defaultRoutes: RouteRecordRaw[] = [
@@ -106,6 +107,12 @@ const defaultRoutes: RouteRecordRaw[] = [
     path: '/customerProfil/:id',
     name: 'CustomerProfile',
     component: CustomerProfil,
+    props: true
+  },
+  {
+    path: '/confirmation/:token',
+    name: 'Confirmation',
+    component: Confirmation,
     props: true
   },
   {

@@ -151,6 +151,10 @@ export const useCustomerStore = defineStore({
         console.error("Couldn't filter out non-weekly customers:", error)
         return []
       }
+    },
+    getCustomerCountByWorkspaceId(workspaceId: number): number {
+      console.log(this.customers.filter((customer) => customer.workspaceId === workspaceId).length)
+      return this.customers.filter((customer) => customer.workspaceId === workspaceId).length
     }
   }
 })

@@ -5,6 +5,7 @@ import {
   deleteUserSchema,
   getAllUsersSchema,
   getLoggedUserDataSchema,
+  getUserByEmailSchema,
   getUserByIdSchema,
   updateUserSchema,
 } from '../../../schemas/users.js';
@@ -92,6 +93,29 @@ const routes: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       } catch (err) {
         fastify.log.error(err);
         return reply.status(500).send('Server error');
+      }
+    },
+  );
+  fastify.get<{ Params: { email: string } }>(
+    '/userByEmail/:email',
+    {
+      schema: getUserByEmailSchema,
+    },
+    async (request, reply) => {
+      const email = request.params.email;
+      if (!email) {
+        return reply.status(400).send('Email parameter is required');
+      }
+
+      try {
+        const data = await usersService.getUserByEmail(email);
+        if (!data) {
+          return reply.status(404).send(`User with email ${email} not found`);
+        }
+        return reply.status(200).send(data);
+      } catch (error) {
+        fastify.log.error(error);
+        return reply.status(500).send('Internal Server Error');
       }
     },
   );

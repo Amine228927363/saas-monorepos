@@ -23,7 +23,7 @@
               </th>
               <th class="px-6 py-3 border-b border-gray-200 bg-gray-50">
                 <div class=" w-[400px]">
-                  <Search @search="handleSearch" class="relative left-8 shadow px-4 w-full " />
+                  <Search v-model="searchTerm" @emitSearch="handleSearch"  class="relative left-8 shadow px-4 w-full " />
                 </div>
               </th>
             </tr>
@@ -89,7 +89,7 @@ const customerStore = useCustomerStore();
 const taskStore = useTaskStore();
 const customerList = ref<Customer[]>([]);
 const searchTerm = ref<string>('');
-  const tasks=ref<task[]>([])
+const tasks=ref<task[]>([])
 const fetchCustomers = async () => {
   try {
     await customerStore.getCustomers();
@@ -120,14 +120,16 @@ const getProgressWidth = async (customerId:string) => {
       return 0; 
     }
   };
-
-
-
 onMounted(() => {
   fetchCustomers();
  
 });
-const handleSearch = () => {
-  searchTerm.value = searchTerm.value.trim();
+const handleSearch = (searchTerm: string) => {
+  this.searchTerm = searchTerm;
 };
+const filteredCustomerList = computed(() => {
+  return customerList.value.filter(customer => {
+    return customer.name.toLowerCase().includes(searchTerm.value.toLowerCase());
+  });
+});
 </script>

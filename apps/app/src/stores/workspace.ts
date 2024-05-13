@@ -9,6 +9,7 @@ export const useWorkspaceStore = defineStore({
     isLoading: false,
     error: null as ServerError | null
   }),
+
   actions: {
     async createWorkspace(newWorkspace: createWorkspace) {
       this.isLoading = true
@@ -52,6 +53,11 @@ export const useWorkspaceStore = defineStore({
         this.error = err?.response?.data
       }
       this.isLoading = false
+    },
+    getWorkspaceClientCountById(workspaceId: number): number {
+      const workspace = this.workspaces.find((workspace) => workspace.id === workspaceId)
+      console.log(workspace ? workspace.customers?.length || 0 : 0)
+      return workspace ? workspace.customers?.length || 0 : 0
     }
   }
 })

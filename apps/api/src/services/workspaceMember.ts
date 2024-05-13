@@ -11,9 +11,12 @@ export class MemberService {
   //create function
   async createMember(payload: WorkspaceMemberPayload) {
     try {
+      // Prepare data object for creating the member
       const data: any = {
         role: payload.role,
       };
+
+      // Connect workspace if workspaceId is provided
       if (payload.workspaceId) {
         data.workspace = {
           connect: {
@@ -21,6 +24,8 @@ export class MemberService {
           },
         };
       }
+
+      // Connect user if userId is provided
       if (payload.userId) {
         data.user = {
           connect: {
@@ -28,15 +33,31 @@ export class MemberService {
           },
         };
       }
-      await this.prisma.workspaceMember.create({
-        data,
+      const whereClause = {
+        userId: payload.userId,
+        workspaceId: parseInt(payload.workspaceId) as number,
+      };
+
+      // Check if the member already exists based on userId and workspaceId
+      const existingMember = await this.prisma.workspaceMember.findFirst({
+        where: whereClause,
       });
-      return 'Member Created Successfully';
+      if (!existingMember) {
+        await this.prisma.workspaceMember.create({
+          data,
+        });
+
+        return 'Member Created Successfully';
+      } else {
+        // Member already exists
+        return 'Member already exists';
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw new Error('Error creating member');
     }
   }
+
   //update function
   async updateMember(id: number, payload: UpdateMemberPayload) {
     try {

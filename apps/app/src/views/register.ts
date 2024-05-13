@@ -8,6 +8,7 @@ import Button from './components/Button.vue'
 import Form from './components/CreateCustomerForm.vue'
 import Tasks from './components/tasks.vue'
 import Contact from './components/Contact.vue'
+import Confirmation from './components/Confirmation.vue'
 export function registerViews(app: App): void {
   app.component('PrivateView', PrivateView)
   app.component('PublicView', PublicView)
@@ -18,4 +19,5 @@ export function registerViews(app: App): void {
   app.component('CustomerForm', Form)
   app.component('Tasks', Tasks)
   app.component('Contact', Contact)
+  app.component('Confirmation', Confirmation)
 }

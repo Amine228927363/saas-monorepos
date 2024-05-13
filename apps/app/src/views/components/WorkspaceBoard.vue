@@ -2,7 +2,7 @@
   <div class="flex flex-wrap">
     <div class="w-1/4 px-4" v-for="(column, index) in workspaceColumns" :key="index">
       <div class="mb-4  " v-for="(workspace, workspaceIndex) in column" :key="workspaceIndex">
-       <WorkspaceCard class="hover:bg-gray-100" :workspace="workspace" :deleteWorkspace="deleteWorkspace" />
+       <WorkspaceCard class="hover:bg-gray-100" :workspace="workspace" :deleteWorkspace="deleteWorkspace" :numClients="getNumClients(workspace.id)" />
        
       </div>
     </div>
@@ -43,6 +43,9 @@ const deleteWorkspace = async (id: number) => {
   } catch (error) {
     console.log('Error deleting the workspace');
   }
+};
+const getNumClients = (id: number) => {
+ return customerStore.getCustomerCountByWorkspaceId(id)
 };
 // Distribute workspaces into columns
 const workspaceColumns = computed(() => {

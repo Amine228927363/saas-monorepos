@@ -142,9 +142,7 @@ const getCustomersThisWeek = async () => {
     series.value[0].data = customerCountByDay;
   } catch (error) {
     console.error("Error fetching customers for the week:", error);
-  } finally {
-    isLoading.value = false; 
-  }
+  } 
 };
 
 const getOnboardedCustomer = async () => {
